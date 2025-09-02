@@ -1,0 +1,9 @@
+requests
+python-dotenv
+pyperclip
+windows-toasts
+keyboard
+pystray
+pillow
+keyring
+  
