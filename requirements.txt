@@ -6,4 +6,5 @@ keyboard
 pystray
 pillow
 keyring
-  
+pywin32
+pyinstaller

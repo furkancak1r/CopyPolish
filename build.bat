@@ -4,7 +4,15 @@ echo Building executable file...
 
 pip install pyinstaller
 
-pyinstaller --onefile --windowed --name CopyPolish main.py
+echo Stopping any running CopyPolish.exe...
+taskkill /F /IM CopyPolish.exe >NUL 2>&1
+timeout /T 1 /NOBREAK >NUL
+
+echo Cleaning previous build artifacts...
+if exist build rmdir /S /Q build
+if exist dist rmdir /S /Q dist
+
+pyinstaller --onefile --windowed --uac-admin --clean --noconfirm --name CopyPolish main.py
 
 echo.
 echo Build finished.
