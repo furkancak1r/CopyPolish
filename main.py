@@ -523,8 +523,21 @@ def open_settings():
 
 def create_tray_image() -> Image.Image:
     try:
-        # icon.ico dosyasını yükle
-        img = Image.open('icon.ico')
+        # icon.ico dosyasını gömülü kaynaklardan yükle
+        if getattr(sys, 'frozen', False):
+            # Packaged exe için - _MEIPASS dizininden yükle
+            base_path = sys._MEIPASS
+            icon_path = os.path.join(base_path, 'icons', 'icon.ico')
+            print(f"Loading icon from embedded resources: {icon_path}")
+        else:
+            # Development ortamı için
+            icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'icon.ico')
+            print(f"Loading icon from: {icon_path}")
+        
+        if not os.path.exists(icon_path):
+            raise FileNotFoundError(f"Icon file not found: {icon_path}")
+            
+        img = Image.open(icon_path)
         # Tray için uygun boyuta getir (genellikle 64x64)
         img = img.resize((64, 64), Image.Resampling.LANCZOS)
         # RGBA moduna çevir (şeffaflık için)
