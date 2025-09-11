@@ -41,8 +41,6 @@ class APIHandler:
         self.model_translate_candidates: List[str] = list(c.get("translate_candidates", [])) or [self.model_translate]
         self.model_improve_candidates: List[str] = list(c.get("improve_candidates", [])) or [self.model_improve]
         self.auto_fallback = bool(c.get("auto_fallback", True))
-        self.debug_http = bool(c.get("debug_http", False)) or bool(os.environ.get("COPY_POLISH_DEBUG_HTTP"))
-        self.log_request_body = bool(c.get("log_request_body", False)) or bool(os.environ.get("COPY_POLISH_LOG_REQUEST_BODY"))
 
     def _refresh_config(self):
         try:
@@ -134,21 +132,6 @@ class APIHandler:
             "presence_penalty": 0,
         }
 
-        if self.debug_http:
-            safe_headers = dict(headers)
-            if "Authorization" in safe_headers:
-                safe_headers["Authorization"] = "Bearer ***"
-            self.logger.info(f"HTTP POST {self.base_url} model={model_to_use} timeout={self.timeout}")
-            try:
-                self.logger.info(f"Headers: {json.dumps(safe_headers)}")
-            except Exception:
-                self.logger.info(f"Headers: {safe_headers}")
-            if self.log_request_body:
-                try:
-                    self.logger.info(f"Body: {json.dumps(data, ensure_ascii=False)}")
-                except Exception:
-                    self.logger.info("Body: <unserializable>")
-
         for attempt in range(self.max_retries + 1):
             try:
                 self.logger.info("API isteği gönderiliyor...")
@@ -167,19 +150,9 @@ class APIHandler:
                     text_body = ''
 
                 self.logger.info(f"HTTP durum kodu: {status}")
-                if self.debug_http:
-                    try:
-                        self.logger.info(f"Yanıt gövdesi: {text_body}")
-                    except Exception:
-                        pass
 
                 if status == 200:
                     result = response.json()
-                    if self.debug_http:
-                        try:
-                            self.logger.info(f"Yanıt JSON: {json.dumps(result, ensure_ascii=False)}")
-                        except Exception:
-                            self.logger.info("Yanıt JSON: <unserializable>")
 
                     if isinstance(result, dict) and result.get('error'):
                         err = result['error']

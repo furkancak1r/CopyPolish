@@ -21,9 +21,6 @@ DEFAULT_CONFIG: Dict[str, Any] = {
     ],
     "timeout": 30,
     "max_retries": 2,
-    # Debugging
-    "debug_http": True,  # Tüm HTTP yanıt gövdesini logla (konsolda da görünür)
-    "log_request_body": False,  # İstek gövdesini de loglamak için True yapın
 }
 
 
@@ -81,3 +78,4 @@ def save_config(cfg: Dict[str, Any]) -> bool:
         return True
     except Exception:
         return False
+  
