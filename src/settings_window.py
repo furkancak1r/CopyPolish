@@ -17,29 +17,29 @@ class SettingsWindow(tk.Toplevel):
 
     def setup_window(self):
         self.title("CopyPolish - Ayarlar")
+        try:
+            self.iconbitmap("icon.ico")
+        except tk.TclError:
+            self.logger.warning("Ayarlar penceresi için icon.ico bulunamadı.")
+            
         self.geometry("520x360")
         self.resizable(True, True)
 
-        # Pencereyi ekranın ortasına yerleştir (başlangıçta)
         self.update_idletasks()
         x = (self.winfo_screenwidth() // 2) - (520 // 2)
         y = (self.winfo_screenheight() // 2) - (360 // 2)
         self.geometry(f"520x360+{x}+{y}")
 
-        # Window davranışı ayarları
         self.attributes('-topmost', True)
-        self.grab_set()  # Modal davranış
+        self.grab_set()
         self.focus_set()
 
-        # Pencere kapatma eventi
         self.protocol("WM_DELETE_WINDOW", self.cancel)
 
     def create_widgets(self):
-        # Ana frame
         main_frame = ttk.Frame(self, padding="20")
         main_frame.pack(fill=tk.BOTH, expand=True)
 
-        # Başlık
         title_label = ttk.Label(
             main_frame,
             text="CopyPolish Ayarları",
@@ -47,11 +47,9 @@ class SettingsWindow(tk.Toplevel):
         )
         title_label.pack(pady=(0, 20))
 
-        # API Anahtarı bölümü
         api_frame = ttk.LabelFrame(main_frame, text="OpenRouter API Ayarları", padding="15")
         api_frame.pack(fill=tk.X, pady=(0, 20))
 
-        # API anahtarı açıklaması
         desc_label = ttk.Label(
             api_frame,
             text="OpenRouter API anahtarınızı girin. Ücretsiz hesap için: https://openrouter.ai",
@@ -60,13 +58,11 @@ class SettingsWindow(tk.Toplevel):
         )
         desc_label.pack(anchor=tk.W, pady=(0, 10))
 
-        # API anahtarı girişi
         api_key_frame = ttk.Frame(api_frame)
         api_key_frame.pack(fill=tk.X, pady=(0, 10))
 
         ttk.Label(api_key_frame, text="API Anahtarı:").pack(anchor=tk.W)
 
-        # API key entry ve show/hide
         entry_frame = ttk.Frame(api_key_frame)
         entry_frame.pack(fill=tk.X, pady=(5, 0))
 
@@ -83,7 +79,6 @@ class SettingsWindow(tk.Toplevel):
         except Exception:
             pass
 
-        # Kısayol ve sağ tık menüsü bağla
         self.bind_entry_shortcuts(self.api_key_entry)
 
         self.show_key_var = tk.BooleanVar()
@@ -95,7 +90,6 @@ class SettingsWindow(tk.Toplevel):
         )
         self.show_key_check.pack(side=tk.RIGHT, padx=(10, 0))
 
-        # Test butonu
         self.test_button = ttk.Button(
             api_frame,
             text="API Bağlantısını Test Et",
@@ -103,11 +97,9 @@ class SettingsWindow(tk.Toplevel):
         )
         self.test_button.pack(anchor=tk.W, pady=(5, 0))
 
-        # Model ayarları
         model_frame = ttk.LabelFrame(main_frame, text="Model Ayarları", padding="15")
         model_frame.pack(fill=tk.X, pady=(0, 20))
 
-        # Mevcut modeller listesi (önerilen ücretsiz modeller)
         available_models = [
             "qwen/qwen3-coder:free",
             "mistralai/mistral-nemo:free",
@@ -115,7 +107,6 @@ class SettingsWindow(tk.Toplevel):
             "meta-llama/llama-3.1-8b-instruct:free",
         ]
 
-        # İyileştirme modeli
         ttk.Label(model_frame, text="İyileştirme Modeli:").pack(anchor=tk.W)
         self.model_improve_var = tk.StringVar()
         self.model_improve_combo = ttk.Combobox(
@@ -124,7 +115,6 @@ class SettingsWindow(tk.Toplevel):
         )
         self.model_improve_combo.pack(fill=tk.X, pady=(2, 8))
 
-        # Çeviri modeli
         ttk.Label(model_frame, text="Çeviri Modeli (TR→EN):").pack(anchor=tk.W)
         self.model_translate_var = tk.StringVar()
         self.model_translate_combo = ttk.Combobox(
@@ -133,7 +123,6 @@ class SettingsWindow(tk.Toplevel):
         )
         self.model_translate_combo.pack(fill=tk.X, pady=(2, 8))
 
-        # Otomatik fallback seçeneği
         self.auto_fallback_var = tk.BooleanVar()
         self.auto_fallback_check = ttk.Checkbutton(
             model_frame,
@@ -142,7 +131,6 @@ class SettingsWindow(tk.Toplevel):
         )
         self.auto_fallback_check.pack(anchor=tk.W, pady=(4, 0))
 
-        # Butonlar
         button_frame = ttk.Frame(main_frame)
         button_frame.pack(fill=tk.X, pady=(10, 0))
 
@@ -158,7 +146,6 @@ class SettingsWindow(tk.Toplevel):
             command=self.save_settings
         ).pack(side=tk.RIGHT)
 
-        # Kısayollar: Enter ve Ctrl+S kaydetsin
         try:
             self.bind('<Control-s>', lambda e: self.save_settings())
             self.bind('<Control-S>', lambda e: self.save_settings())
@@ -166,7 +153,6 @@ class SettingsWindow(tk.Toplevel):
         except Exception:
             pass
 
-        # İçerik yerleşince boyutu ayarla
         try:
             self.after(0, self.adjust_size)
         except Exception:
@@ -185,7 +171,6 @@ class SettingsWindow(tk.Toplevel):
             pass
 
     def bind_entry_shortcuts(self, entry: ttk.Entry):
-        # Ctrl+V yapıştırma
         def paste_event(event=None):
             try:
                 text = self.clipboard_get()
@@ -199,7 +184,6 @@ class SettingsWindow(tk.Toplevel):
         entry.bind('<Control-V>', paste_event)
         entry.bind('<Shift-Insert>', paste_event)
 
-        # Sağ tık menüsü
         menu = tk.Menu(entry, tearoff=0)
         menu.add_command(label="Yapıştır", command=paste_event)
 
@@ -222,7 +206,6 @@ class SettingsWindow(tk.Toplevel):
             api_key = self.api_handler.get_api_key()
             if api_key:
                 self.api_key_var.set(api_key)
-            # Model/config yükle
             c = cfg.load_config()
             try:
                 self.model_improve_var.set(c.get("model_improve", "qwen/qwen3-coder:free"))
@@ -241,9 +224,7 @@ class SettingsWindow(tk.Toplevel):
                 messagebox.showwarning("Uyarı", "Lütfen API anahtarını girin.")
                 return
 
-            # API anahtarını kaydet
             if self.api_handler.set_api_key(api_key):
-                # Konfigürasyonu güncelle
                 current_cfg = cfg.load_config()
                 current_cfg["model_improve"] = self.model_improve_var.get() or current_cfg.get("model_improve")
                 current_cfg["model_translate"] = self.model_translate_var.get() or current_cfg.get("model_translate")
@@ -270,17 +251,14 @@ class SettingsWindow(tk.Toplevel):
 
     def test_api_connection(self):
         try:
-            # Geçici olarak API anahtarını ayarla
             temp_key = self.api_key_var.get().strip()
             if not temp_key:
                 messagebox.showwarning("Uyarı", "Lütfen önce API anahtarını girin.")
                 return
 
-            # Test et
             self.test_button.config(text="Test ediliyor...", state="disabled")
             self.update()
 
-            # Kalıcı kaydetmeden test et
             success, message = self.api_handler.test_api_connection_with_key(temp_key)
 
             if success:
@@ -305,3 +283,4 @@ class SettingsWindow(tk.Toplevel):
                 self.on_close()
         except Exception:
             pass
+  

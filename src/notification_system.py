@@ -7,7 +7,7 @@ class NotificationSystem:
     def __init__(self):
         self.logger = logging.getLogger(__name__)
         self.app_name = "CopyPolish"
-        self.icon_path = None  # Varsayılan sistem simgesi kullanılacak
+        self.icon_path = "icon.ico"
         
     def show_success(self, message: str, title: str = "Başarılı"):
         self._show_notification(title, message, "success")
@@ -24,7 +24,6 @@ class NotificationSystem:
     def _show_notification(self, title: str, message: str, notification_type: str = "info"):
         def show_async():
             try:
-                # Mesajı kısalt
                 if len(message) > 100:
                     message_short = message[:97] + "..."
                 else:
@@ -34,26 +33,20 @@ class NotificationSystem:
                     title=f"{self.app_name} - {title}",
                     message=message_short,
                     app_name=self.app_name,
-                    timeout=5,  # 5 saniye görünür
-                    toast=True  # Windows toast notification
+                    app_icon=self.icon_path,
+                    timeout=5,
+                    toast=True
                 )
                 
                 self.logger.info(f"Bildirim gösterildi: {title} - {message}")
                 
             except Exception as e:
                 self.logger.error(f"Bildirim gösterme hatası: {e}")
-                # Fallback: Konsola yazdır
                 print(f"[{self.app_name}] {title}: {message}")
                 
-        # Bildirimi ayrı thread'de göster
         threading.Thread(target=show_async, daemon=True).start()
         
-    def show_processing(self, message: str = "İşlem devam ediyor..."):
-        """İşlem durumu bildirimi"""
-        self.show_info(message, "İşlem Durumu")
-        
     def show_api_error(self, error_message: str):
-        """API hatası özel bildirimi"""
         if "API anahtarı" in error_message:
             self.show_error(
                 "API anahtarınızı ayarlardan kontrol edin.",
@@ -72,26 +65,9 @@ class NotificationSystem:
         else:
             self.show_error(error_message, "API Hatası")
             
-    def show_text_processed(self, action: str, success: bool = True):
-        """Metin işleme sonucu bildirimi"""
-        if success:
-            if action == "improve":
-                self.show_success("Metniniz başarıyla iyileştirildi!")
-            elif action == "translate":
-                self.show_success("Metniniz başarıyla çevrildi!")
-            else:
-                self.show_success("İşlem başarıyla tamamlandı!")
-        else:
-            if action == "improve":
-                self.show_error("Metin iyileştirilemedi.")
-            elif action == "translate":
-                self.show_error("Metin çevrilemedi.")
-            else:
-                self.show_error("İşlem başarısız oldu.")
-                
     def show_startup_notification(self):
-        """Uygulama başlangıç bildirimi"""
         self.show_info(
             "CopyPolish arka planda çalışıyor. Metin seçin ve araç çubuğunu kullanın!",
             "Hoş Geldiniz"
         )
+  

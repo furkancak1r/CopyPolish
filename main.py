@@ -1,7 +1,7 @@
 import tkinter as tk
 import threading
 import pystray
-from PIL import Image, ImageDraw
+from PIL import Image
 import sys
 import os
 import logging
@@ -23,15 +23,12 @@ class CopyPolishApp:
         self.setup_tkinter_root()
         
     def setup_logging(self):
-        # Attempt to fix console encoding issues before setting up logging
         try:
-            # sys.stderr is the default stream for logging
             if hasattr(sys.stderr, 'reconfigure'):
                 sys.stderr.reconfigure(encoding='utf-8')
             if hasattr(sys.stdout, 'reconfigure'):
                 sys.stdout.reconfigure(encoding='utf-8')
         except (TypeError, AttributeError):
-            # This might fail in some non-console environments, which is acceptable.
             pass
 
         logging.basicConfig(
@@ -39,34 +36,22 @@ class CopyPolishApp:
             format='%(asctime)s - %(levelname)s - %(message)s',
             handlers=[
                 logging.FileHandler('copypolish.log', encoding='utf-8'),
-                logging.StreamHandler() # This will now use the reconfigured stream
+                logging.StreamHandler()
             ],
-            force=True  # Overwrites existing handlers to prevent duplicates
+            force=True
         )
         self.logger = logging.getLogger(__name__)
         
     def setup_tkinter_root(self):
         """Gizli tkinter root penceresi oluştur"""
         self.root = tk.Tk()
-        self.root.withdraw()  # Pencereyi gizle
+        self.root.withdraw()
         self.root.title("CopyPolish")
+        try:
+            self.root.iconbitmap("icon.ico")
+        except tk.TclError:
+            self.logger.warning("icon.ico bulunamadı, varsayılan simge kullanılacak.")
         
-    def create_icon_image(self):
-        width = 64
-        height = 64
-        color1 = (255, 255, 255)
-        color2 = (0, 120, 215)
-        
-        image = Image.new('RGB', (width, height), color1)
-        dc = ImageDraw.Draw(image)
-        
-        dc.rectangle(
-            (width // 4, height // 4, width * 3 // 4, height * 3 // 4),
-            fill=color2
-        )
-        
-        return image
-    
     def create_tray_menu(self):
         return pystray.Menu(
             pystray.MenuItem("Ayarlar", self.open_settings),
@@ -74,17 +59,14 @@ class CopyPolishApp:
         )
     
     def open_settings(self, icon=None, item=None):
-        # Tüm Tk işlemlerini ana Tk thread'inde çalıştır
         def _open():
             try:
-                # Metin algılamayı ayarlar açıkken duraklat
                 try:
                     if self.text_detector:
                         self.text_detector.pause()
                 except Exception:
                     pass
 
-                # Önceki pencere varsa kapat
                 if self.settings_window is not None:
                     try:
                         if self.settings_window.winfo_exists():
@@ -92,7 +74,6 @@ class CopyPolishApp:
                     except:
                         pass
                 
-                # Yeni ayarlar penceresi aç
                 def on_settings_close():
                     try:
                         if self.text_detector:
@@ -115,14 +96,12 @@ class CopyPolishApp:
         if self.text_detector:
             self.text_detector.stop()
 
-        # Tray'i durdur
         try:
             if self.tray_icon:
                 self.tray_icon.stop()
         except Exception:
             pass
 
-        # Tk kapatma işlemlerini ana Tk thread'inde yap
         def _close_tk():
             try:
                 if self.settings_window and self.settings_window.winfo_exists():
@@ -150,7 +129,6 @@ class CopyPolishApp:
                 tk_root=self.root
             )
             self.text_detector.start()
-            self.logger.info("Metin algılama başlatıldı")
         except Exception as e:
             self.logger.error(f"Metin algılama başlatılamadı: {e}")
     
@@ -158,7 +136,18 @@ class CopyPolishApp:
         try:
             self.logger.info("CopyPolish başlatılıyor...")
             
-            icon_image = self.create_icon_image()
+            try:
+                icon_image = Image.open("icon.ico")
+            except FileNotFoundError:
+                self.logger.error("icon.ico dosyası bulunamadı! Programatik simge oluşturuluyor.")
+                width = 64
+                height = 64
+                color1 = (255, 255, 255)
+                color2 = (0, 120, 215)
+                icon_image = Image.new('RGB', (width, height), color1)
+                dc = ImageDraw.Draw(icon_image)
+                dc.rectangle((width // 4, height // 4, width * 3 // 4, height * 3 // 4), fill=color2)
+
             menu = self.create_tray_menu()
             
             self.tray_icon = pystray.Icon(
@@ -167,17 +156,14 @@ class CopyPolishApp:
                 menu=menu
             )
             
-            # Metin algılamayı ayrı thread'de başlat
             detection_thread = threading.Thread(target=self.start_text_detection)
             detection_thread.daemon = True
             detection_thread.start()
             
-            # System tray'i arka planda çalıştır
             self.logger.info("Sistem tepsisinde çalışıyor...")
             tray_thread = threading.Thread(target=self.tray_icon.run, daemon=True)
             tray_thread.start()
             
-            # Tk ana döngüsünü ana thread'de çalıştır
             self.logger.info("Tk arayüz döngüsü başlatılıyor...")
             self.root.mainloop()
 
