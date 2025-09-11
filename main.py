@@ -65,20 +65,27 @@ class CopyPolishApp:
         except tk.TclError:
             self.logger.warning("icon.ico bulunamadı, varsayılan simge kullanılacak.")
         
+    def _toggle_pause(self):
+        if self.text_detector:
+            if self.text_detector.paused:
+                self.text_detector.resume()
+            else:
+                self.text_detector.pause()
+    
     def create_tray_menu(self):
-        return pystray.Menu(
-            pystray.MenuItem("Ayarlar", self.open_settings),
-            pystray.MenuItem("Çıkış", self.quit_app)
-        )
+        def get_menu_items():
+            pause_text = "Algılamayı Sürdür" if self.text_detector and self.text_detector.paused else "Algılamayı Duraklat"
+            yield pystray.MenuItem(pause_text, self._toggle_pause)
+            yield pystray.MenuItem("Ayarlar", self.open_settings)
+            yield pystray.MenuItem("Çıkış", self.quit_app)
+
+        return pystray.Menu(get_menu_items)
     
     def open_settings(self, icon=None, item=None):
         def _open():
             try:
-                try:
-                    if self.text_detector:
-                        self.text_detector.pause()
-                except Exception:
-                    pass
+                if self.text_detector:
+                    self.text_detector.pause()
 
                 if self.settings_window is not None:
                     try:
@@ -88,11 +95,8 @@ class CopyPolishApp:
                         pass
                 
                 def on_settings_close():
-                    try:
-                        if self.text_detector:
-                            self.text_detector.resume()
-                    except Exception:
-                        pass
+                    if self.text_detector:
+                        self.text_detector.resume()
 
                 self.settings_window = SettingsWindow(self.root, on_close=on_settings_close)
                 self.logger.info("Ayarlar penceresi açıldı")
@@ -135,7 +139,6 @@ class CopyPolishApp:
     
     def start_text_detection(self):
         try:
-            from src.text_detector import TextDetector
             self.text_detector = TextDetector(
                 api_handler=self.api_handler,
                 notification_system=self.notification_system,
@@ -148,6 +151,10 @@ class CopyPolishApp:
     def run(self):
         try:
             self.logger.info("CopyPolish başlatılıyor...")
+            
+            detection_thread = threading.Thread(target=self.start_text_detection)
+            detection_thread.daemon = True
+            detection_thread.start()
             
             try:
                 icon_image = Image.open(resource_path("icon.ico"))
@@ -169,10 +176,8 @@ class CopyPolishApp:
                 menu=menu
             )
             
-            detection_thread = threading.Thread(target=self.start_text_detection)
-            detection_thread.daemon = True
-            detection_thread.start()
-            
+            self.root.after(1000, self.notification_system.show_startup_notification)
+
             self.logger.info("Sistem tepsisinde çalışıyor...")
             tray_thread = threading.Thread(target=self.tray_icon.run, daemon=True)
             tray_thread.start()

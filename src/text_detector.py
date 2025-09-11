@@ -40,7 +40,7 @@ class TextDetector:
         while self.running:
             try:
                 if self.paused:
-                    time.sleep(0.1)
+                    time.sleep(0.2) # Sleep longer when paused to reduce CPU
                     continue
                 self.check_text_selection()
                 time.sleep(0.1)
@@ -49,12 +49,12 @@ class TextDetector:
                 time.sleep(1)
                 
     def pause(self):
-        self.logger.info("Metin algılama duraklatıldı")
         self.paused = True
+        self.logger.info("Metin algılama duraklatıldı")
 
     def resume(self):
-        self.logger.info("Metin algılama devam ediyor")
         self.paused = False
+        self.logger.info("Metin algılama devam ediyor")
 
     def _is_outlook_active(self):
         try:
@@ -85,22 +85,17 @@ class TextDetector:
         try:
             left_button_state = win32api.GetKeyState(win32con.VK_LBUTTON)
             
-            if left_button_state < 0: # Mouse is pressed down
+            if left_button_state < 0:
                 if not self.mouse_pressed:
-                    # This is the start of a new click action.
-                    
-                    # Proactive close: If the toolbar is visible, this click's only job is to close it.
                     if self.toolbar.window and self.toolbar.window.winfo_exists():
                         self.toolbar.hide_toolbar()
                         return 
 
-                    # If toolbar was not open, proceed with starting a potential selection.
                     self.mouse_pressed = True
                     self.selection_start_pos = win32gui.GetCursorPos()
                     self.was_outlook_active_on_press = self._is_outlook_active()
-            else: # Mouse is up
+            else:
                 if self.mouse_pressed:
-                    # This was a drag/selection action, so handle it.
                     self.mouse_pressed = False
                     self.handle_mouse_release()
                     
