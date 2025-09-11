@@ -55,14 +55,6 @@ class ContextualToolbar:
         )
         translate_btn.pack(side=tk.LEFT, padx=2)
 
-        close_btn = ttk.Button(
-            main_frame,
-            text="×",
-            command=self.hide_toolbar,
-            width=3
-        )
-        close_btn.pack(side=tk.RIGHT, padx=2)
-
         self.position_window(x, y)
         self.window.bind('<Button-1>', self.on_click)
 
