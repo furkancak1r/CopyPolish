@@ -245,7 +245,7 @@ class SettingsWindow(tk.Toplevel):
             api_key = self.api_key_var.get().strip()
 
             if not api_key:
-                messagebox.showwarning("Uyarı", "Lütfen API anahtarını girin.")
+                messagebox.showwarning("Uyarı", "Lütfen API anahtarını girin.", parent=self)
                 return
 
             if self.api_handler.set_api_key(api_key):
@@ -256,7 +256,7 @@ class SettingsWindow(tk.Toplevel):
                 current_cfg["auto_fallback"] = bool(self.auto_fallback_var.get())
                 if not cfg.save_config(current_cfg):
                     self.logger.warning("Konfigürasyon kaydedilemedi, varsayılanlar kullanılacak")
-                messagebox.showinfo("Başarılı", "Ayarlar başarıyla kaydedildi!")
+                messagebox.showinfo("Başarılı", "Ayarlar başarıyla kaydedildi!", parent=self)
                 try:
                     self.grab_release()
                 except Exception:
@@ -268,17 +268,17 @@ class SettingsWindow(tk.Toplevel):
                 except Exception:
                     pass
             else:
-                messagebox.showerror("Hata", "API anahtarı kaydedilemedi!")
+                messagebox.showerror("Hata", "API anahtarı kaydedilemedi!", parent=self)
 
         except Exception as e:
             self.logger.error(f"Ayarlar kaydetme hatası: {e}")
-            messagebox.showerror("Hata", f"Ayarlar kaydedilemedi: {str(e)}")
+            messagebox.showerror("Hata", f"Ayarlar kaydedilemedi: {str(e)}", parent=self)
 
     def test_api_connection(self):
         try:
             temp_key = self.api_key_var.get().strip()
             if not temp_key:
-                messagebox.showwarning("Uyarı", "Lütfen önce API anahtarını girin.")
+                messagebox.showwarning("Uyarı", "Lütfen önce API anahtarını girin.", parent=self)
                 return
 
             self.test_button.config(text="Test ediliyor...", state="disabled")
@@ -287,13 +287,13 @@ class SettingsWindow(tk.Toplevel):
             success, message = self.api_handler.test_api_connection_with_key(temp_key)
 
             if success:
-                messagebox.showinfo("Başarılı", message)
+                messagebox.showinfo("Başarılı", message, parent=self)
             else:
-                messagebox.showerror("Hata", message)
+                messagebox.showerror("Hata", message, parent=self)
 
         except Exception as e:
             self.logger.error(f"API test hatası: {e}")
-            messagebox.showerror("Hata", f"API testi başarısız: {str(e)}")
+            messagebox.showerror("Hata", f"API testi başarısız: {str(e)}", parent=self)
         finally:
             self.test_button.config(text="API Bağlantısını Test Et", state="normal")
 
