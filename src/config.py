@@ -25,20 +25,21 @@ DEFAULT_CONFIG: Dict[str, Any] = {
 }
 
 
-def _config_dir() -> str:
+def get_app_data_dir() -> str:
+    """Gets the application data directory, creating it if it doesn't exist."""
     # Windows: use %APPDATA%\CopyPolish
     base = os.environ.get("APPDATA") if os.name == "nt" else os.path.expanduser("~")
     path = os.path.join(base, "CopyPolish")
     try:
         os.makedirs(path, exist_ok=True)
     except Exception:
-        # Fallback to local folder
+        # Fallback to local folder if AppData is not writable
         path = os.path.abspath(".")
     return path
 
 
 def get_config_path() -> str:
-    return os.path.join(_config_dir(), "config.json")
+    return os.path.join(get_app_data_dir(), "config.json")
 
 
 def _merge_defaults(user_cfg: Dict[str, Any]) -> Dict[str, Any]:

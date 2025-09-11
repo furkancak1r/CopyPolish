@@ -10,8 +10,8 @@ from src.text_detector import TextDetector
 from src.settings_window import SettingsWindow
 from src.api_handler import APIHandler
 from src.notification_system import NotificationSystem
-## Rebuild EXE command
-#pyinstaller --name "CopyPolish" --onefile --windowed --icon="icon.ico" --add-data="icon.ico;." main.py
+from src.config import get_app_data_dir
+
 def resource_path(relative_path):
     """ Get absolute path to resource, works for dev and for PyInstaller """
     try:
@@ -41,12 +41,14 @@ class CopyPolishApp:
                 sys.stdout.reconfigure(encoding='utf-8')
         except (TypeError, AttributeError):
             pass
+            
+        log_file_path = os.path.join(get_app_data_dir(), "copypolish.log")
 
         logging.basicConfig(
             level=logging.INFO,
             format='%(asctime)s - %(levelname)s - %(message)s',
             handlers=[
-                logging.FileHandler('copypolish.log', encoding='utf-8'),
+                logging.FileHandler(log_file_path, encoding='utf-8'),
                 logging.StreamHandler()
             ],
             force=True

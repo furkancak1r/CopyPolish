@@ -5,6 +5,7 @@ import os
 import sys
 from src.api_handler import APIHandler
 from src import config as cfg
+from src.config import get_app_data_dir
 
 def resource_path(relative_path):
     """ Get absolute path to resource, works for dev and for PyInstaller """
@@ -32,13 +33,13 @@ class SettingsWindow(tk.Toplevel):
         except tk.TclError:
             self.logger.warning("Ayarlar penceresi için icon.ico bulunamadı.")
             
-        self.geometry("520x420") # Increased height for theme option
+        self.geometry("520x480")
         self.resizable(True, True)
 
         self.update_idletasks()
         x = (self.winfo_screenwidth() // 2) - (520 // 2)
-        y = (self.winfo_screenheight() // 2) - (420 // 2)
-        self.geometry(f"520x420+{x}+{y}")
+        y = (self.winfo_screenheight() // 2) - (480 // 2)
+        self.geometry(f"520x480+{x}+{y}")
 
         self.attributes('-topmost', True)
         self.grab_set()
@@ -107,7 +108,6 @@ class SettingsWindow(tk.Toplevel):
         )
         self.test_button.pack(anchor=tk.W, pady=(5, 0))
 
-        # --- Appearance Settings ---
         appearance_frame = ttk.LabelFrame(main_frame, text="Görünüm Ayarları", padding="15")
         appearance_frame.pack(fill=tk.X, pady=(0, 15))
 
@@ -118,7 +118,6 @@ class SettingsWindow(tk.Toplevel):
             values=["light", "dark"], state="readonly"
         )
         self.theme_combo.pack(fill=tk.X, pady=(2, 0))
-
 
         model_frame = ttk.LabelFrame(main_frame, text="Model Ayarları", padding="15")
         model_frame.pack(fill=tk.X, pady=(0, 15))
@@ -153,6 +152,15 @@ class SettingsWindow(tk.Toplevel):
             variable=self.auto_fallback_var,
         )
         self.auto_fallback_check.pack(anchor=tk.W, pady=(4, 0))
+        
+        advanced_frame = ttk.LabelFrame(main_frame, text="Gelişmiş", padding="15")
+        advanced_frame.pack(fill=tk.X, pady=(0, 15))
+        
+        ttk.Button(
+            advanced_frame,
+            text="Log Dosyasını Görüntüle",
+            command=self._open_log_file
+        ).pack(anchor=tk.W)
 
         button_frame = ttk.Frame(main_frame)
         button_frame.pack(fill=tk.X, pady=(10, 0), side=tk.BOTTOM)
@@ -180,16 +188,26 @@ class SettingsWindow(tk.Toplevel):
             self.after(0, self.adjust_size)
         except Exception:
             pass
+            
+    def _open_log_file(self):
+        log_path = os.path.join(get_app_data_dir(), "copypolish.log")
+        if os.path.exists(log_path):
+            try:
+                os.startfile(log_path)
+            except Exception as e:
+                messagebox.showerror("Hata", f"Log dosyası açılamadı: {e}", parent=self)
+        else:
+            messagebox.showinfo("Bilgi", "Log dosyası henüz oluşturulmadı.", parent=self)
 
     def adjust_size(self):
         try:
             self.update_idletasks()
             req_w = max(520, self.winfo_reqwidth())
-            req_h = max(420, self.winfo_reqheight())
+            req_h = max(480, self.winfo_reqheight())
             x = (self.winfo_screenwidth() // 2) - (req_w // 2)
             y = (self.winfo_screenheight() // 2) - (req_h // 2)
             self.geometry(f"{req_w}x{req_h}+{x}+{y}")
-            self.minsize(500, 400)
+            self.minsize(500, 460)
         except Exception:
             pass
 
