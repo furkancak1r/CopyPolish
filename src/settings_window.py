@@ -32,13 +32,13 @@ class SettingsWindow(tk.Toplevel):
         except tk.TclError:
             self.logger.warning("Ayarlar penceresi için icon.ico bulunamadı.")
             
-        self.geometry("520x360")
+        self.geometry("520x420") # Increased height for theme option
         self.resizable(True, True)
 
         self.update_idletasks()
         x = (self.winfo_screenwidth() // 2) - (520 // 2)
-        y = (self.winfo_screenheight() // 2) - (360 // 2)
-        self.geometry(f"520x360+{x}+{y}")
+        y = (self.winfo_screenheight() // 2) - (420 // 2)
+        self.geometry(f"520x420+{x}+{y}")
 
         self.attributes('-topmost', True)
         self.grab_set()
@@ -58,7 +58,7 @@ class SettingsWindow(tk.Toplevel):
         title_label.pack(pady=(0, 20))
 
         api_frame = ttk.LabelFrame(main_frame, text="OpenRouter API Ayarları", padding="15")
-        api_frame.pack(fill=tk.X, pady=(0, 20))
+        api_frame.pack(fill=tk.X, pady=(0, 15))
 
         desc_label = ttk.Label(
             api_frame,
@@ -107,8 +107,21 @@ class SettingsWindow(tk.Toplevel):
         )
         self.test_button.pack(anchor=tk.W, pady=(5, 0))
 
+        # --- Appearance Settings ---
+        appearance_frame = ttk.LabelFrame(main_frame, text="Görünüm Ayarları", padding="15")
+        appearance_frame.pack(fill=tk.X, pady=(0, 15))
+
+        ttk.Label(appearance_frame, text="Araç Çubuğu Teması:").pack(anchor=tk.W)
+        self.theme_var = tk.StringVar()
+        self.theme_combo = ttk.Combobox(
+            appearance_frame, textvariable=self.theme_var,
+            values=["light", "dark"], state="readonly"
+        )
+        self.theme_combo.pack(fill=tk.X, pady=(2, 0))
+
+
         model_frame = ttk.LabelFrame(main_frame, text="Model Ayarları", padding="15")
-        model_frame.pack(fill=tk.X, pady=(0, 20))
+        model_frame.pack(fill=tk.X, pady=(0, 15))
 
         available_models = [
             "qwen/qwen3-coder:free",
@@ -142,7 +155,7 @@ class SettingsWindow(tk.Toplevel):
         self.auto_fallback_check.pack(anchor=tk.W, pady=(4, 0))
 
         button_frame = ttk.Frame(main_frame)
-        button_frame.pack(fill=tk.X, pady=(10, 0))
+        button_frame.pack(fill=tk.X, pady=(10, 0), side=tk.BOTTOM)
 
         ttk.Button(
             button_frame,
@@ -172,11 +185,11 @@ class SettingsWindow(tk.Toplevel):
         try:
             self.update_idletasks()
             req_w = max(520, self.winfo_reqwidth())
-            req_h = max(360, self.winfo_reqheight())
+            req_h = max(420, self.winfo_reqheight())
             x = (self.winfo_screenwidth() // 2) - (req_w // 2)
             y = (self.winfo_screenheight() // 2) - (req_h // 2)
             self.geometry(f"{req_w}x{req_h}+{x}+{y}")
-            self.minsize(500, 340)
+            self.minsize(500, 400)
         except Exception:
             pass
 
@@ -218,6 +231,7 @@ class SettingsWindow(tk.Toplevel):
                 self.api_key_var.set(api_key)
             c = cfg.load_config()
             try:
+                self.theme_var.set(c.get("theme", "light"))
                 self.model_improve_var.set(c.get("model_improve", "qwen/qwen3-coder:free"))
                 self.model_translate_var.set(c.get("model_translate", "qwen/qwen3-coder:free"))
                 self.auto_fallback_var.set(bool(c.get("auto_fallback", True)))
@@ -236,6 +250,7 @@ class SettingsWindow(tk.Toplevel):
 
             if self.api_handler.set_api_key(api_key):
                 current_cfg = cfg.load_config()
+                current_cfg["theme"] = self.theme_var.get()
                 current_cfg["model_improve"] = self.model_improve_var.get() or current_cfg.get("model_improve")
                 current_cfg["model_translate"] = self.model_translate_var.get() or current_cfg.get("model_translate")
                 current_cfg["auto_fallback"] = bool(self.auto_fallback_var.get())

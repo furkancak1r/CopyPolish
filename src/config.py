@@ -4,6 +4,7 @@ from typing import Dict, Any
 
 
 DEFAULT_CONFIG: Dict[str, Any] = {
+    "theme": "light",
     "model_improve": "qwen/qwen3-coder:free",
     "model_translate": "qwen/qwen3-coder:free",
     "auto_fallback": True,

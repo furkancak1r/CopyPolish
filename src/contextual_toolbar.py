@@ -6,6 +6,7 @@ import logging
 import pyperclip
 import win32api
 import win32con
+from src import config as cfg
 
 class ContextualToolbar:
     def __init__(self, api_handler, notification_system, tk_root):
@@ -26,6 +27,9 @@ class ContextualToolbar:
         self.tk_root.after(0, _show)
 
     def create_toolbar_window(self, x, y, selected_text):
+        config = cfg.load_config()
+        theme = config.get("theme", "light")
+
         self.window = tk.Toplevel(self.tk_root)
         self.window.title("")
         self.window.overrideredirect(True)
@@ -36,24 +40,67 @@ class ContextualToolbar:
         style = ttk.Style()
         style.theme_use('clam')
 
-        main_frame = ttk.Frame(self.window, padding="5")
+        if theme == "dark":
+            # Dark theme colors
+            bg_color = '#2E2E2E'
+            btn_bg = '#4A4A4A'
+            btn_fg = 'white'
+            hover_bg = '#5A5A5A'
+            
+            style.configure('Modern.TButton',
+                            background=btn_bg,
+                            foreground=btn_fg,
+                            font=('Segoe UI', 10),
+                            borderwidth=0,
+                            padding=(10, 5),
+                            relief='flat')
+            
+            style.map('Modern.TButton',
+                      background=[('active', hover_bg), ('hover', hover_bg)])
+        else:
+            # Light theme colors
+            bg_color = '#F0F0F0'
+            btn_bg = '#FFFFFF'
+            btn_fg = 'black'
+            hover_bg = '#EAEAEA'
+            border_color = '#ADADAD'
+
+            style.configure('Modern.TButton',
+                            background=btn_bg,
+                            foreground=btn_fg,
+                            font=('Segoe UI', 10),
+                            borderwidth=1,
+                            bordercolor=border_color,
+                            padding=(10, 5),
+                            relief='flat')
+
+            style.map('Modern.TButton',
+                      background=[('active', hover_bg), ('hover', hover_bg)],
+                      bordercolor=[('hover', '#0078D7')])
+
+        self.window.configure(bg=bg_color)
+        
+        main_frame = ttk.Frame(self.window, padding="5", style='Modern.TFrame')
+        style.configure('Modern.TFrame', background=bg_color)
         main_frame.pack(fill=tk.BOTH, expand=True)
 
         improve_btn = ttk.Button(
             main_frame,
             text="İyileştir",
             command=lambda: self.handle_improve_text(selected_text),
+            style='Modern.TButton',
             width=10
         )
-        improve_btn.pack(side=tk.LEFT, padx=2)
+        improve_btn.pack(side=tk.LEFT, padx=5, pady=5)
 
         translate_btn = ttk.Button(
             main_frame,
             text="TR→EN",
             command=lambda: self.handle_translate_text(selected_text),
+            style='Modern.TButton',
             width=10
         )
-        translate_btn.pack(side=tk.LEFT, padx=2)
+        translate_btn.pack(side=tk.LEFT, padx=5, pady=5)
 
         self.position_window(x, y)
         self.window.bind('<Button-1>', self.on_click)
