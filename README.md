@@ -1,64 +1,34 @@
+File: README.md
+```markdown
 # CopyPolish - Akıllı Metin Asistanı
 
-CopyPolish, Windows masaüstünde çalışan, seçili metinleri anında iyileştiren ve çeviren akıllı bir araçtır. Kullanıcı bir metin seçtiğinde, fare imlecinin yanında beliren araç çubuğu ile tek tıkla metni mükemmelleştirebilir.
+CopyPolish, **Microsoft Outlook** içinde çalışan, seçtiğiniz metinleri anında iyileştiren ve çeviren akıllı bir Windows aracıdır. Bir metin seçtiğinizde, fare imlecinin yanında beliren araç çubuğu ile tek tıkla metninizi mükemmelleştirebilirsiniz.
 
 ## ✨ Özellikler
 
-- **🎯 Bağlamsal Araç Çubuğu**: Metin seçtiğinizde otomatik beliren mini araç çubuğu
-- **🔧 Metin İyileştirme**: Dilbilgisi, akıcılık ve ton açısından metni iyileştirme
-- **🌐 Anında Çeviri**: Türkçe'den İngilizce'ye çeviri (TR→EN)
-- **⚙️ Kolay Ayarlar**: Sistem tepsisinden erişilebilen ayarlar penceresi
-- **🔐 Güvenli Depolama**: API anahtarları Windows Credential Manager'da güvenle saklanır
-- **📢 Akıllı Bildirimler**: İşlem durumu hakkında anlık bildirimler
+- **🎯 Sadece Outlook'ta Çalışır**: Yalnızca Microsoft Outlook aktifken devreye girerek diğer uygulamalarda gereksiz yere çalışmaz.
+- **🚀 Anında Tepki**: Metni seçtiğiniz anda beliren hızlı ve hafif araç çubuğu.
+- **🔧 Akıllı Metin İyileştirme**: Dilbilgisi, akıcılık ve ton açısından metni iyileştirme.
+- **🌐 Anında Çeviri**: Türkçe'den İngilizce'ye anında çeviri (TR→EN).
+- **⚙️ Kolay Ayarlar**: Sistem tepsisinden erişilebilen basit ayarlar penceresi.
+- **🔐 Güvenli Depolama**: API anahtarları Windows Credential Manager'da güvenle saklanır.
 
-## 🚀 Kurulum
+## 🚀 Kurulum ve Kullanım
 
-### Gereksinimler
-- Windows 10/11
-- Python 3.7 veya üzeri
-- OpenRouter API anahtarı (ücretsiz hesap: https://openrouter.ai)
+1.  **Uygulamayı İndirin:**
+    *   Projenin "Releases" sayfasından en son `CopyPolish.exe` dosyasını indirin.
 
-### Adımlar
+2.  **Çalıştırın:**
+    *   İndirdiğiniz `CopyPolish.exe` dosyasına çift tıklayarak çalıştırın. Uygulama sistem tepsisinde (saat'in yanındaki ikonlar) çalışmaya başlayacaktır.
 
-1. **Projeyi klonlayın:**
-   ```bash
-   git clone [repository-url]
-   cd CopyPolish2
-   ```
+3.  **API Anahtarını Ayarlayın:**
+    *   Sistem tepsisindeki CopyPolish simgesine sağ tıklayın ve "Ayarlar"ı seçin.
+    *   [OpenRouter.ai](https://openrouter.ai) adresinden aldığınız ücretsiz API anahtarınızı girin ve "Kaydet"e tıklayın.
 
-2. **Gerekli kütüphaneleri yükleyin:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Uygulamayı test edin:**
-   ```bash
-   python test_app.py
-   ```
-
-4. **Uygulamayı başlatın:**
-   ```bash
-   python main.py
-   ```
-
-   Veya Windows'ta:
-   ```bash
-   start.bat
-   ```
-
-## 🔧 Kullanım
-
-1. **Kurulum sonrası:**
-   - Uygulama sistem tepsisinde çalışmaya başlar
-   - Tepsideki simgeye sağ tıklayarak "Ayarlar"ı açın
-   - OpenRouter API anahtarınızı girin ve kaydedin
-
-2. **Metin işleme:**
-   - Herhangi bir uygulamada metni fare ile seçin
-   - Beliren araç çubuğundan istediğiniz işlemi seçin:
-     - **🔧 Düzelt**: Metni iyileştir
-     - **🌐 TR→EN**: Türkçe'den İngilizce'ye çevir
-   - İşlenmiş metin otomatik olarak yerine yapıştırılır
+4.  **Kullanmaya Başlayın:**
+    *   **Microsoft Outlook** içinde bir e-posta yazarken, düzenlemek istediğiniz metni fare ile seçin.
+    *   Metnin yanında beliren araç çubuğundan "İyileştir" veya "TR→EN" seçeneğine tıklayın.
+    *   İşlenmiş metin, orijinal metnin üzerine otomatik olarak yapıştırılacaktır.
 
 ## 📁 Proje Yapısı
 
@@ -71,65 +41,43 @@ CopyPolish2/
 │   ├── text_detector.py    # Metin seçim algılama
 │   ├── settings_window.py  # Ayarlar penceresi
 │   └── notification_system.py  # Bildirim sistemi
-├── test_app.py            # Test script'i
+├── icon.ico                # Uygulama simgesi
 ├── requirements.txt       # Python bağımlılıkları
 ├── start.bat             # Windows başlatma script'i
 └── README.md             # Bu dosya
 ```
 
-## 🔑 API Ayarları
+## 🛠️ Geliştiriciler İçin
 
-1. [OpenRouter.ai](https://openrouter.ai) adresinden ücretsiz hesap oluşturun
-2. API anahtarınızı alın
-3. CopyPolish ayarlarından API anahtarını girin
-4. "API Bağlantısını Test Et" butonu ile test edin
+Projeyi kaynak kodundan çalıştırmak veya geliştirmek isterseniz:
 
-**Varsayılan Model:** `qwen/qwen3-coder:free` (Ücretsiz)
+1.  **Projeyi klonlayın:**
+    ```bash
+    # git clone ...
+    cd CopyPolish2
+    ```
 
-## 🛠️ Sorun Giderme
+2.  **Gerekli kütüphaneleri yükleyin:**
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-### Yaygın Sorunlar:
+3.  **Uygulamayı başlatın:**
+    ```bash
+    python main.py
+    ```
 
-**"API anahtarı bulunamadı" hatası:**
-- Sistem tepsisinden ayarları açın
-- API anahtarınızı girin ve kaydedin
-
-**Araç çubuğu belirmiyor:**
-- Metni fare ile sürükleyerek seçin (çift tıklama değil)
-- Windows Defender'ın uygulamayı engellediğini kontrol edin
-
-**Bildirimler görünmüyor:**
-- Windows bildirim ayarlarını kontrol edin
-- Uygulama loglarını `copypolish.log` dosyasından inceleyin
+4.  **`.exe` dosyası oluşturun:**
+    *   `pyinstaller` kullanarak tek dosya bir uygulama oluşturmak için aşağıdaki komutu çalıştırın. Çıktı, `dist` klasöründe olacaktır.
+    ```bash
+    pyinstaller --name "CopyPolish" --onefile --windowed --icon="icon.ico" --add-data="icon.ico;." main.py
+    ```
 
 ## 📝 Loglar
 
 Uygulama, tüm işlemleri `copypolish.log` dosyasında kaydeder. Sorun yaşadığınızda bu dosyayı kontrol edebilirsiniz.
 
-## 🔒 Güvenlik
-
-- API anahtarları Windows Credential Manager'da şifrelenerek saklanır
-- Hiçbir veri harici sunucularda depolanmaz
-- Tüm metin işlemleri OpenRouter API'si üzerinden gerçekleşir
-
-## 📋 Sistem Gereksinimleri
-
-- **İşletim Sistemi:** Windows 10/11
-- **RAM:** Minimum 50 MB
-- **Python:** 3.7+
-- **İnternet:** API çağrıları için gerekli
-
-## 🤝 Katkıda Bulunma
-
-Bu proje açık kaynak kodludur. Katkılarınızı bekliyoruz!
-
-## 📞 Destek
-
-Sorun yaşıyorsanız:
-1. `test_app.py` dosyasını çalıştırın
-2. `copypolish.log` dosyasını kontrol edin
-3. GitHub Issues bölümünden bildirin
-
 ---
 
 **CopyPolish** - Yazılı iletişiminizi hızlandıran görünmez asistan 🚀
+```

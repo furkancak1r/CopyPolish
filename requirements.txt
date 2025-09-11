@@ -6,4 +6,5 @@ Pillow
 plyer
 pyperclip
 pywinauto
+pyinstaller
   

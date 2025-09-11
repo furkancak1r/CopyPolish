@@ -10,7 +10,7 @@ from src.text_detector import TextDetector
 from src.settings_window import SettingsWindow
 from src.api_handler import APIHandler
 from src.notification_system import NotificationSystem
-
+#pyinstaller --name "CopyPolish" --onefile --windowed --icon="icon.ico" --add-data="icon.ico;." main.py
 class CopyPolishApp:
     def __init__(self):
         self.setup_logging()
