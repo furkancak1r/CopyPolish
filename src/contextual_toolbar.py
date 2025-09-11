@@ -129,28 +129,31 @@ class ContextualToolbar:
             pass
 
     def paste_text(self, text: str):
-        """
-        Pastes the given text by simulating CTRL+V. This is non-destructive
-        and will only overwrite the currently selected text.
-        """
         original_clip = None
         try:
-            # Preserve user's clipboard
             original_clip = pyperclip.paste()
         except Exception:
             pass
         
         try:
             pyperclip.copy(text)
+            
+            # Simulate CTRL+V to paste
             self._press_key(win32con.VK_CONTROL, True)
             self._press_key(ord('V'), True)
             time.sleep(0.05)
             self._press_key(ord('V'), False)
             self._press_key(win32con.VK_CONTROL, False)
+            
+            # Simulate an Enter press to move to the next line
+            time.sleep(0.05)
+            self._press_key(win32con.VK_RETURN, True)
+            time.sleep(0.01)
+            self._press_key(win32con.VK_RETURN, False)
+
         except Exception as e:
             self.logger.error(f"Yapıştırma hatası: {e}")
         finally:
-            # Restore the original clipboard content after a short delay
             if original_clip is not None:
                 threading.Timer(0.2, lambda: pyperclip.copy(original_clip)).start()
 
