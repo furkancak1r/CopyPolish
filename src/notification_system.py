@@ -1,13 +1,29 @@
 import logging
 from plyer import notification
 import threading
-import time
+import os
+import sys
+
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 class NotificationSystem:
     def __init__(self):
         self.logger = logging.getLogger(__name__)
         self.app_name = "CopyPolish"
-        self.icon_path = "icon.ico"
+        try:
+            self.icon_path = resource_path("icon.ico")
+            # Check if the file actually exists to prevent plyer errors
+            if not os.path.exists(self.icon_path):
+                self.icon_path = "" # Plyer handles empty string as no icon
+        except Exception:
+            self.icon_path = ""
         
     def show_success(self, message: str, title: str = "Başarılı"):
         self._show_notification(title, message, "success")

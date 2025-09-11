@@ -1,7 +1,7 @@
 import tkinter as tk
 import threading
 import pystray
-from PIL import Image
+from PIL import Image, ImageDraw
 import sys
 import os
 import logging
@@ -10,7 +10,18 @@ from src.text_detector import TextDetector
 from src.settings_window import SettingsWindow
 from src.api_handler import APIHandler
 from src.notification_system import NotificationSystem
+## Rebuild EXE command
 #pyinstaller --name "CopyPolish" --onefile --windowed --icon="icon.ico" --add-data="icon.ico;." main.py
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
 class CopyPolishApp:
     def __init__(self):
         self.setup_logging()
@@ -48,7 +59,7 @@ class CopyPolishApp:
         self.root.withdraw()
         self.root.title("CopyPolish")
         try:
-            self.root.iconbitmap("icon.ico")
+            self.root.iconbitmap(resource_path("icon.ico"))
         except tk.TclError:
             self.logger.warning("icon.ico bulunamadı, varsayılan simge kullanılacak.")
         
@@ -137,7 +148,7 @@ class CopyPolishApp:
             self.logger.info("CopyPolish başlatılıyor...")
             
             try:
-                icon_image = Image.open("icon.ico")
+                icon_image = Image.open(resource_path("icon.ico"))
             except FileNotFoundError:
                 self.logger.error("icon.ico dosyası bulunamadı! Programatik simge oluşturuluyor.")
                 width = 64

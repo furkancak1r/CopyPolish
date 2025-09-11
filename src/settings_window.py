@@ -1,9 +1,19 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 import logging
+import os
+import sys
 from src.api_handler import APIHandler
 from src import config as cfg
 
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 class SettingsWindow(tk.Toplevel):
     def __init__(self, parent=None, on_close=None):
@@ -18,7 +28,7 @@ class SettingsWindow(tk.Toplevel):
     def setup_window(self):
         self.title("CopyPolish - Ayarlar")
         try:
-            self.iconbitmap("icon.ico")
+            self.iconbitmap(resource_path("icon.ico"))
         except tk.TclError:
             self.logger.warning("Ayarlar penceresi için icon.ico bulunamadı.")
             

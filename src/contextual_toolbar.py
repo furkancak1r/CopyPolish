@@ -64,7 +64,6 @@ class ContextualToolbar:
         close_btn.pack(side=tk.RIGHT, padx=2)
 
         self.position_window(x, y)
-        self.window.bind('<FocusOut>', self.on_focus_out)
         self.window.bind('<Button-1>', self.on_click)
 
     def position_window(self, x, y):
@@ -138,14 +137,12 @@ class ContextualToolbar:
         try:
             pyperclip.copy(text)
             
-            # Simulate CTRL+V to paste
             self._press_key(win32con.VK_CONTROL, True)
             self._press_key(ord('V'), True)
             time.sleep(0.05)
             self._press_key(ord('V'), False)
             self._press_key(win32con.VK_CONTROL, False)
             
-            # Simulate an Enter press to move to the next line
             time.sleep(0.05)
             self._press_key(win32con.VK_RETURN, True)
             time.sleep(0.01)
@@ -170,9 +167,6 @@ class ContextualToolbar:
                 self.auto_hide_after_id = self.window.after(4000, self._hide_toolbar_impl)
         except Exception:
             pass
-
-    def on_focus_out(self, event):
-        self.window.after(100, self.hide_toolbar)
 
     def on_click(self, event):
         self.start_auto_hide_timer()

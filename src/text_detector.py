@@ -24,7 +24,7 @@ class TextDetector:
         self.mouse_pressed = False
         self.selection_start_pos = None
         self.selection_threshold_px = 5
-        self.was_outlook_active_on_press = False # State on mouse down
+        self.was_outlook_active_on_press = False
         
     def start(self):
         self.running = True
@@ -85,14 +85,22 @@ class TextDetector:
         try:
             left_button_state = win32api.GetKeyState(win32con.VK_LBUTTON)
             
-            if left_button_state < 0:
+            if left_button_state < 0: # Mouse is pressed down
                 if not self.mouse_pressed:
+                    # This is the start of a new click action.
+                    
+                    # Proactive close: If the toolbar is visible, this click's only job is to close it.
+                    if self.toolbar.window and self.toolbar.window.winfo_exists():
+                        self.toolbar.hide_toolbar()
+                        return 
+
+                    # If toolbar was not open, proceed with starting a potential selection.
                     self.mouse_pressed = True
                     self.selection_start_pos = win32gui.GetCursorPos()
-                    # Capture if Outlook was active at the moment the click started
                     self.was_outlook_active_on_press = self._is_outlook_active()
-            else:
+            else: # Mouse is up
                 if self.mouse_pressed:
+                    # This was a drag/selection action, so handle it.
                     self.mouse_pressed = False
                     self.handle_mouse_release()
                     
@@ -100,7 +108,6 @@ class TextDetector:
             self.logger.error(f"Metin seçim kontrolü hatası: {e}")
             
     def handle_mouse_release(self):
-        # Ignore if the click action did not start inside Outlook
         if not self.was_outlook_active_on_press:
             return
 
