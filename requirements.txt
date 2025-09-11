@@ -1,10 +1,9 @@
-requests
-python-dotenv
-pyperclip
-windows-toasts
-keyboard
 pystray
-pillow
 keyring
 pywin32
-pyinstaller
+requests
+Pillow
+plyer
+pyperclip
+pywinauto
+  

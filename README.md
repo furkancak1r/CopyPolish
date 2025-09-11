@@ -1,94 +1,135 @@
-# CopyPolish - Otomatik Metin Düzeltme Aracı
+# CopyPolish - Akıllı Metin Asistanı
 
-Bu araç, seçtiğiniz herhangi bir metni bir klavye kısayolu (`CTRL+ALT+Y`) ile yakalar, OpenRouter AI servisine göndererek yeniden yazdırır ve sonucu otomatik olarak orijinal metnin üzerine yapıştırır. `CTRL+ALT+T` kısayolu ise seçili Türkçe metni İngilizceye çevirip yapıştırır. Her sonuç, sonuna bir boş satır eklenerek yapıştırılır.
+CopyPolish, Windows masaüstünde çalışan, seçili metinleri anında iyileştiren ve çeviren akıllı bir araçtır. Kullanıcı bir metin seçtiğinde, fare imlecinin yanında beliren araç çubuğu ile tek tıkla metni mükemmelleştirebilir.
 
-## Özellikler
-- Tepsi simgesi ve sağ tık menüsü: Başlat, Durdur, Ayarlar, Çıkış
-- Ayarlar penceresi: API Key yönetimi (keyring), model seçimi, iki ayrı kısayol
-- Kısayollar: Düzeltme `CTRL+ALT+Y`, Çeviri `CTRL+ALT+T`
- - Kısayollar: Düzeltme `CTRL+ALT+Y`, Çeviri `CTRL+ALT+T`, Son ekran görüntüsü yolu `CTRL+ALT+V` (ayarlar ile otomatik yapıştır kapatılabilir)
+## ✨ Özellikler
 
-## Kurulum Adımları
+- **🎯 Bağlamsal Araç Çubuğu**: Metin seçtiğinizde otomatik beliren mini araç çubuğu
+- **🔧 Metin İyileştirme**: Dilbilgisi, akıcılık ve ton açısından metni iyileştirme
+- **🌐 Anında Çeviri**: Türkçe'den İngilizce'ye çeviri (TR→EN)
+- **⚙️ Kolay Ayarlar**: Sistem tepsisinden erişilebilen ayarlar penceresi
+- **🔐 Güvenli Depolama**: API anahtarları Windows Credential Manager'da güvenle saklanır
+- **📢 Akıllı Bildirimler**: İşlem durumu hakkında anlık bildirimler
 
-### 1. Python Kurulumu
-Eğer bilgisayarınızda Python yüklü değilse, https://www.python.org/downloads/ adresinden en son sürümü indirin. Kurulum sırasında "Add Python to PATH" seçeneğini işaretlediğinizden emin olun.
+## 🚀 Kurulum
 
-### 2. Bağımlılıkları Yükleme
-Proje klasöründe bir komut istemi (CMD) veya PowerShell penceresi açın ve aşağıdaki komutu çalıştırarak gerekli Python kütüphanelerini yükleyin:
+### Gereksinimler
+- Windows 10/11
+- Python 3.7 veya üzeri
+- OpenRouter API anahtarı (ücretsiz hesap: https://openrouter.ai)
 
-```bash
-pip install -r requirements.txt
+### Adımlar
+
+1. **Projeyi klonlayın:**
+   ```bash
+   git clone [repository-url]
+   cd CopyPolish2
+   ```
+
+2. **Gerekli kütüphaneleri yükleyin:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Uygulamayı test edin:**
+   ```bash
+   python test_app.py
+   ```
+
+4. **Uygulamayı başlatın:**
+   ```bash
+   python main.py
+   ```
+
+   Veya Windows'ta:
+   ```bash
+   start.bat
+   ```
+
+## 🔧 Kullanım
+
+1. **Kurulum sonrası:**
+   - Uygulama sistem tepsisinde çalışmaya başlar
+   - Tepsideki simgeye sağ tıklayarak "Ayarlar"ı açın
+   - OpenRouter API anahtarınızı girin ve kaydedin
+
+2. **Metin işleme:**
+   - Herhangi bir uygulamada metni fare ile seçin
+   - Beliren araç çubuğundan istediğiniz işlemi seçin:
+     - **🔧 Düzelt**: Metni iyileştir
+     - **🌐 TR→EN**: Türkçe'den İngilizce'ye çevir
+   - İşlenmiş metin otomatik olarak yerine yapıştırılır
+
+## 📁 Proje Yapısı
+
+```
+CopyPolish2/
+├── main.py                 # Ana uygulama dosyası
+├── src/
+│   ├── api_handler.py      # OpenRouter API entegrasyonu
+│   ├── contextual_toolbar.py  # Araç çubuğu arayüzü
+│   ├── text_detector.py    # Metin seçim algılama
+│   ├── settings_window.py  # Ayarlar penceresi
+│   └── notification_system.py  # Bildirim sistemi
+├── test_app.py            # Test script'i
+├── requirements.txt       # Python bağımlılıkları
+├── start.bat             # Windows başlatma script'i
+└── README.md             # Bu dosya
 ```
 
-### 3. Çalıştırma
-```bash
-python main.py
-```
-Veya derlenmiş sürümü `dist/CopyPolish.exe` ile çalıştırın.
+## 🔑 API Ayarları
 
-### 3.1. Exe Oluşturma (PyInstaller)
-Windows için tek dosyalık `.exe` üretmek isterseniz:
+1. [OpenRouter.ai](https://openrouter.ai) adresinden ücretsiz hesap oluşturun
+2. API anahtarınızı alın
+3. CopyPolish ayarlarından API anahtarını girin
+4. "API Bağlantısını Test Et" butonu ile test edin
 
-```bash
-pip install pyinstaller
+**Varsayılan Model:** `qwen/qwen3-coder:free` (Ücretsiz)
 
-# Yönetici yetkisi isteyen exe (önerilir)
-pyinstaller CopyPolish.spec
+## 🛠️ Sorun Giderme
 
-# veya tek satırda yönetici yetkisiyle
-pyinstaller --onefile --windowed --uac-admin --name CopyPolish main.py
-```
+### Yaygın Sorunlar:
 
-Oluşan dosya `dist/CopyPolish.exe` yolundadır. Alternatif olarak `build.bat` çalıştırabilirsiniz.
+**"API anahtarı bulunamadı" hatası:**
+- Sistem tepsisinden ayarları açın
+- API anahtarınızı girin ve kaydedin
 
-Notlar
-- Uygulama Windows'ta daima yönetici olarak çalışır. Python ile doğrudan çalıştırıldığında yetki yoksa UAC yükseltmesi ister; PyInstaller exe ise manifest ile yönetici ister.
+**Araç çubuğu belirmiyor:**
+- Metni fare ile sürükleyerek seçin (çift tıklama değil)
+- Windows Defender'ın uygulamayı engellediğini kontrol edin
 
-## Başlangıçta Yöneticisiz UAC (Otomatik Başlat)
-UAC istemi olmadan yönetici olarak başlatmak için Görev Zamanlayıcı kullanın (Startup klasörü yeterli değildir).
+**Bildirimler görünmüyor:**
+- Windows bildirim ayarlarını kontrol edin
+- Uygulama loglarını `copypolish.log` dosyasından inceleyin
 
-1) Exe'yi oluşturun ve repo kökünde `dist/CopyPolish.exe` bulunduğundan emin olun.
-2) PowerShell'i yönetici olarak açın ve çalıştırın:
+## 📝 Loglar
 
-```powershell
-./scripts/install-startup-elevated.ps1
-# veya özel exe yolu ile
-./scripts/install-startup-elevated.ps1 -ExePath "C:\\path\\to\\CopyPolish.exe"
-```
+Uygulama, tüm işlemleri `copypolish.log` dosyasında kaydeder. Sorun yaşadığınızda bu dosyayı kontrol edebilirsiniz.
 
-Bu komut:
-- Exe'yi `%LOCALAPPDATA%\CopyPolish\CopyPolish.exe` konumuna kopyalar.
-- "CopyPolish Elevated" adlı bir görev oluşturur, "Girişte" tetiklenir ve "En yüksek ayrıcalıklarla" çalışır.
-- Tek seferlik yönetici onayı gerekir; sonrasında her oturum açılışında UAC istemi olmadan tepsi uygulaması başlar.
+## 🔒 Güvenlik
 
-Kaldırmak için (yönetici PowerShell):
+- API anahtarları Windows Credential Manager'da şifrelenerek saklanır
+- Hiçbir veri harici sunucularda depolanmaz
+- Tüm metin işlemleri OpenRouter API'si üzerinden gerçekleşir
 
-```powershell
-./scripts/uninstall-startup-elevated.ps1 -RemoveExe
-```
+## 📋 Sistem Gereksinimleri
 
-## Kurulum Paketi (Program Ekle/Kaldır)
-Uygulamayı klasik bir Windows programı olarak kurmak ve "Program Ekle/Kaldır" üzerinden kaldırmak için Inno Setup betiği sağladık.
+- **İşletim Sistemi:** Windows 10/11
+- **RAM:** Minimum 50 MB
+- **Python:** 3.7+
+- **İnternet:** API çağrıları için gerekli
 
-Adımlar:
-1) Exe üretin: `pyinstaller CopyPolish.spec`
-2) Inno Setup (iscc.exe) yükleyin ve derleyin:
-   - GUI ile: `installer/CopyPolish.iss` dosyasını açıp Build → Compile
-   - Komut satırı: `iscc installer\CopyPolish.iss` veya `./scripts/build-installer.ps1`
-3) Oluşan kurulum dosyasının adı `CopyPolish.exe` olacaktır (çıktı: `installer/Output/CopyPolish.exe`).
+## 🤝 Katkıda Bulunma
 
-Kurulum:
-- Dosyaları `C:\Program Files\CopyPolish` içine yerleştirir.
-- Başlat menüsüne kısayol ekler.
-- Girişte, yönetici ayrıcalıklarıyla çalışacak bir Zamanlanmış Görev kaydeder (UAC istemi olmadan).
+Bu proje açık kaynak kodludur. Katkılarınızı bekliyoruz!
 
-Kaldırma:
-- "Uygulamalar ve Özellikler / Program Ekle/Kaldır" üzerinden kaldırdığınızda zamanlanmış görevi de siler.
+## 📞 Destek
 
-### 4. Ayarlar
-- Tepsi simgesine sağ tık → Ayarlar
-- API Key alanı varsayılan olarak maskelenir; "Göster" onay kutusuyla görünür yapılabilir. Boş kaydederse keyring'den silinir
-- Model ve kısayollar (`CTRL+ALT+Y` ve `CTRL+ALT+T`) değiştirilebilir
- - Model ve kısayollar (`CTRL+ALT+Y`, `CTRL+ALT+T`, `CTRL+ALT+V`) değiştirilebilir; ekran görüntüsü yolu için “Otomatik yapıştır” aç/kapat seçeneği vardır.
+Sorun yaşıyorsanız:
+1. `test_app.py` dosyasını çalıştırın
+2. `copypolish.log` dosyasını kontrol edin
+3. GitHub Issues bölümünden bildirin
 
-Not: Eski sürümlerde kullanılan `CTRL+SHIFT+K/L/J` gibi Outlook ile çakışan kısayollar ile `CTRL+ALT+E` (birçok klavyede AltGr+E → €) otomatik olarak yeni güvenli varsayılanlara (`CTRL+ALT+Y` / `CTRL+ALT+T`) taşınır.
+---
+
+**CopyPolish** - Yazılı iletişiminizi hızlandıran görünmez asistan 🚀
