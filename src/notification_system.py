@@ -63,6 +63,12 @@ class NotificationSystem:
         except Exception:
             self.icon_path = None
 
+        # Ensure process has a stable AppUserModelID so Windows uses our Start Menu icon
+        try:
+            ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(self.app_name)
+        except Exception:
+            pass
+
         # Create Start Menu shortcut after icon_path is determined (for AUMID)
         try:
             if getattr(sys, 'frozen', False):
@@ -92,21 +98,18 @@ class NotificationSystem:
             if self.toaster is not None:
                 try:
                     # Use library-managed threading to avoid COM issues in frozen apps
-                    result = self.toaster.show_toast(
+                    self.toaster.show_toast(
                         title=full_title,
                         msg=msg,
                         icon_path=self.icon_path,
                         duration=5,
                         threaded=True,
                     )
-                    # win10toast(_click) returns False or None on failure in some envs
-                    if result is True:
-                        self.logger.info(f"Bildirim gönderildi: {title} - {message}")
-                        return
-                    else:
-                        self.logger.warning("Toast backend kullanılamıyor (return False). Fallback devrede.")
+                    # Treat any non-exception call as success (libs often return None)
+                    self.logger.info(f"Bildirim gonderildi: {title} - {message}")
+                    return
                 except Exception as e:
-                    self.logger.error(f"Bildirim gösterme hatası: {e}")
+                    self.logger.error(f"Bildirim gosterme hatasi: {e}")
 
             # Second fallback: try winotify if available
             if WinNotification is not None:
@@ -124,10 +127,10 @@ class NotificationSystem:
                     except Exception:
                         pass
                     toast.show()
-                    self.logger.info("Winotify bildirimi gösterildi (fallback).")
+                    self.logger.info("Winotify bildirimi gosterildi (fallback).")
                     return
                 except Exception as e:
-                    self.logger.error(f"Winotify gösterme hatası: {e}")
+                    self.logger.error(f"Winotify gosterme hatasi: {e}")
 
             # Final fallback: show a lightweight system message box (non-blocking thread)
             def _fallback_msgbox():
@@ -135,7 +138,7 @@ class NotificationSystem:
                     # MB_TOPMOST | MB_SETFOREGROUND
                     ctypes.windll.user32.MessageBoxW(0, str(msg), str(full_title), 0x00040000 | 0x00010000)
                 except Exception as ie:
-                    self.logger.error(f"Mesaj kutusu gösterilemedi: {ie}")
+                    self.logger.error(f"Mesaj kutusu gosterilemedi: {ie}")
 
             threading.Thread(target=_fallback_msgbox, daemon=True).start()
             self.logger.info("Mesaj kutusu fallback tetiklendi.")
@@ -149,7 +152,7 @@ class NotificationSystem:
             try:
                 ctypes.windll.user32.MessageBoxW(0, str(message), str(full_title), 0x00040000 | 0x00010000)
             except Exception as e:
-                self.logger.error(f"Mesaj kutusu doğrudan gösterilemedi: {e}")
+                self.logger.error(f"Mesaj kutusu dogrudan gosterilemedi: {e}")
         threading.Thread(target=_mb, daemon=True).start()
 
     def show_api_error(self, error_message: str):
@@ -172,7 +175,7 @@ class NotificationSystem:
             self.show_error(error_message, "API Hatası")
 
     def show_startup_notification(self):
-        # Önce native toast dene; ancak başarısız olursa otomatik fallback devreye girer
+        # Try native toast first; automatic fallbacks if it fails
         msg = "CopyPolish arka planda çalışıyor. Metin seçin ve araç çubuğunu kullanın!"
         title = "Hoş Geldiniz"
         self.show_info(msg, title)
@@ -192,7 +195,7 @@ class NotificationSystem:
 
             # Build or update the shortcut using ShellLink and set AppUserModel.ID
             import pythoncom
-            from win32com.shell import shell, shellcon
+            from win32com.shell import shell, shellcon  # noqa: F401
             from win32com.propsys import propsys, pscon
 
             link = pythoncom.CoCreateInstance(
@@ -200,11 +203,11 @@ class NotificationSystem:
             )
             link.SetPath(target)
             link.SetWorkingDirectory(os.path.dirname(target))
-            if self.icon_path:
-                try:
-                    link.SetIconLocation(self.icon_path, 0)
-                except Exception:
-                    pass
+            # Use the exe's embedded icon for reliability (onefile safe)
+            try:
+                link.SetIconLocation(target, 0)
+            except Exception:
+                pass
 
             prop_store = link.QueryInterface(propsys.IID_IPropertyStore)
             propvar = propsys.PROPVARIANTType(app_id, pythoncom.VT_LPWSTR)
@@ -217,3 +220,4 @@ class NotificationSystem:
             self.logger.info(f"Start Menu kısayolu oluşturuldu (AUMID set): {lnk_path}")
         except Exception as e:
             self.logger.warning(f"Start Menu kısayolu/AUMID ayarlanamadı (devam): {e}")
+
