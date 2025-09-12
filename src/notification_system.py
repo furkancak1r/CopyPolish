@@ -37,24 +37,31 @@ class NotificationSystem:
     def __init__(self):
         self.logger = logging.getLogger(__name__)
         self.app_name = "CopyPolish"
-
-        # Pick a notifier that works in both dev and PyInstaller exe
         self.toaster = None
 
-        if ClickToastNotifier is not None:
-            try:
-                self.toaster = ClickToastNotifier()
-                self.logger.info("Bildirim backend: win10toast_click")
-            except Exception as e:
-                self.logger.warning(f"win10toast_click init failed, falling back: {e}")
-                self.toaster = None
-        if self.toaster is None and BasicToastNotifier is not None:
-            try:
-                self.toaster = BasicToastNotifier()
-                self.logger.info("Bildirim backend: win10toast")
-            except Exception as e:
-                self.logger.warning(f"win10toast init failed: {e}")
-                self.toaster = None
+        # Prioritize winotify as it is more stable with threaded Tkinter apps
+        if WinNotification is not None:
+            self.logger.info("Bildirim backend: winotify")
+            # We don't initialize self.toaster, so the logic in _show_notification
+            # will correctly fall back to using WinNotification.
+        else:
+            # Fallback to win10toast libraries if winotify is not available
+            self.logger.warning("winotify bulunamadı, win10toast deneniyor.")
+            if ClickToastNotifier is not None:
+                try:
+                    self.toaster = ClickToastNotifier()
+                    self.logger.info("Bildirim backend: win10toast_click")
+                except Exception as e:
+                    self.logger.warning(f"win10toast_click init failed, falling back: {e}")
+                    self.toaster = None
+            
+            if self.toaster is None and BasicToastNotifier is not None:
+                try:
+                    self.toaster = BasicToastNotifier()
+                    self.logger.info("Bildirim backend: win10toast")
+                except Exception as e:
+                    self.logger.warning(f"win10toast init failed: {e}")
+                    self.toaster = None
 
         try:
             self.icon_path = resource_path("icon.ico")

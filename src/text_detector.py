@@ -112,23 +112,45 @@ class TextDetector:
         try:
             left_button_state = win32api.GetKeyState(win32con.VK_LBUTTON)
             
-            if left_button_state < 0:
-                if not self.mouse_pressed:
+            if left_button_state < 0:  # Mouse button is pressed
+                if not self.mouse_pressed:  # This is a new press
+                    # Check if the toolbar is visible
                     if self.toolbar.window and self.toolbar.window.winfo_exists():
-                        self.toolbar.hide_toolbar()
-                        return 
+                        # Get cursor position
+                        x, y = win32gui.GetCursorPos()
+                        
+                        # Get toolbar geometry ("WxH+X+Y")
+                        geom = self.toolbar.window.winfo_geometry()
+                        parts = geom.replace('x', '+').split('+')
+                        w, h, tx, ty = map(int, parts)
+                        
+                        # Check if the click is inside the toolbar's bounds
+                        if tx <= x < tx + w and ty <= y < ty + h:
+                            # Click is on the toolbar, so let the toolbar handle it.
+                            # Reset the auto-hide timer since the user is interacting with it.
+                            self.toolbar.start_auto_hide_timer()
+                            return  # Do nothing else
+                        else:
+                            # Click is outside the toolbar, so hide it.
+                            self.toolbar.hide_toolbar()
+                            return
 
+                    # If toolbar is not visible, start the normal selection process
                     self.mouse_pressed = True
                     self.selection_start_pos = win32gui.GetCursorPos()
                     self.was_outlook_active_on_press = self._is_outlook_active()
-            else:
+            else:  # Mouse button is not pressed
                 if self.mouse_pressed:
                     self.mouse_pressed = False
                     self.handle_mouse_release()
                     
         except Exception as e:
-            self.logger.error(f"Metin seçim kontrolü hatası: {e}")
-            
+            # Catching Tkinter errors if the window is destroyed during the geometry check
+            if "invalid command name" in str(e).lower():
+                pass  # Window was likely destroyed, which is an expected state.
+            else:
+                self.logger.error(f"Metin seçim kontrolü hatası: {e}")
+
     def handle_mouse_release(self):
         if not self.was_outlook_active_on_press:
             return
