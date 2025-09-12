@@ -1,12 +1,11 @@
-File: README.md
 ```markdown
 # CopyPolish - Akıllı Metin Asistanı
 
-CopyPolish, **Microsoft Outlook** içinde çalışan, seçtiğiniz metinleri anında iyileştiren ve çeviren akıllı bir Windows aracıdır. Bir metin seçtiğinizde, fare imlecinin yanında beliren araç çubuğu ile tek tıkla metninizi mükemmelleştirebilirsiniz.
+CopyPolish, **Microsoft Outlook**'un yalnızca e-posta **yazma ve yanıtlama** pencerelerinde çalışan, seçtiğiniz metinleri anında iyileştiren ve çeviren akıllı bir Windows aracıdır. Bir metin seçtiğinizde, fare imlecinin yanında beliren araç çubuğu ile tek tıkla metninizi mükemmelleştirebilirsiniz.
 
 ## ✨ Özellikler
 
-- **🎯 Sadece Outlook'ta Çalışır**: Yalnızca Microsoft Outlook aktifken devreye girerek diğer uygulamalarda gereksiz yere çalışmaz.
+- **🎯 Akıllı Odaklanma**: Yalnızca e-posta yazdığınızda devreye girer. Gelen kutusunda veya e-posta okuma bölmesinde sizi rahatsız etmez, böylece iş akışınızı bölmez.
 - **🚀 Anında Tepki**: Metni seçtiğiniz anda beliren hızlı ve hafif araç çubuğu.
 - **🔧 Akıllı Metin İyileştirme**: Dilbilgisi, akıcılık ve ton açısından metni iyileştirme.
 - **🌐 Anında Çeviri**: Türkçe'den İngilizce'ye anında çeviri (TR→EN).
