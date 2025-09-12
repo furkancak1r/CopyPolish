@@ -43,7 +43,7 @@ CopyPolish2/
 │   └── notification_system.py  # Bildirim sistemi
 ├── icon.ico                # Uygulama simgesi
 ├── requirements.txt       # Python bağımlılıkları
-├── start.bat             # Windows başlatma script'i
+├── CopyPolish.spec         # PyInstaller yapılandırma dosyası
 └── README.md             # Bu dosya
 ```
 
@@ -68,14 +68,15 @@ Projeyi kaynak kodundan çalıştırmak veya geliştirmek isterseniz:
     ```
 
 4.  **`.exe` dosyası oluşturun:**
-    *   `pyinstaller` kullanarak tek dosya bir uygulama oluşturmak için aşağıdaki komutu çalıştırın. Çıktı, `dist` klasöründe olacaktır.
+    *   Proje, bildirimler gibi bağımlılıkların doğru paketlenmesi için bir `CopyPolish.spec` dosyası kullanır.
+    *   `pyinstaller` ile uygulamayı derlemek için aşağıdaki komutu çalıştırın. Çıktı, `dist` klasöründe olacaktır.
     ```bash
-    pyinstaller --name "CopyPolish" --onefile --windowed --icon="icon.ico" --add-data="icon.ico;." main.py
+    pyinstaller CopyPolish.spec
     ```
 
 ## 📝 Loglar
 
-Uygulama, tüm işlemleri `copypolish.log` dosyasında kaydeder. Sorun yaşadığınızda bu dosyayı kontrol edebilirsiniz.
+Uygulama, tüm işlemleri `%APPDATA%\CopyPolish\copypolish.log` dosyasında kaydeder. Sorun yaşadığınızda bu dosyayı kontrol edebilirsiniz.
 
 ---
 

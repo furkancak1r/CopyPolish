@@ -3,8 +3,10 @@ keyring
 pywin32
 requests
 Pillow
-plyer
 pyperclip
 pywinauto
 pyinstaller
+win10toast-click
+win10toast
+winotify
   

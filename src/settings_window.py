@@ -19,12 +19,19 @@ def resource_path(relative_path):
 class SettingsWindow(tk.Toplevel):
     def __init__(self, parent=None, on_close=None):
         super().__init__(parent)
+        # Hide while building to prevent flicker, show when ready
+        try:
+            self.withdraw()
+        except Exception:
+            pass
         self.api_handler = APIHandler()
         self.logger = logging.getLogger(__name__)
         self.on_close = on_close
         self.setup_window()
         self.create_widgets()
         self.load_settings()
+        # Finalize geometry and reveal the window
+        self._finalize_and_show(parent)
 
     def setup_window(self):
         self.title("CopyPolish - Ayarlar")
@@ -41,9 +48,10 @@ class SettingsWindow(tk.Toplevel):
         y = (self.winfo_screenheight() // 2) - (480 // 2)
         self.geometry(f"520x480+{x}+{y}")
 
-        self.attributes('-topmost', True)
-        self.grab_set()
-        self.focus_set()
+        # Moved to _finalize_and_show to avoid grab on hidden window
+        # self.attributes('-topmost', True)
+        # self.grab_set()
+        # self.focus_set()
 
         self.protocol("WM_DELETE_WINDOW", self.cancel)
 
@@ -184,8 +192,42 @@ class SettingsWindow(tk.Toplevel):
         except Exception:
             pass
 
+        # Size/position is finalized before showing; avoid deferred resizing
+
+    def _finalize_and_show(self, parent=None):
+        """Center, size, and show the window without an initial flash."""
         try:
-            self.after(0, self.adjust_size)
+            # Compute required size and center before showing
+            self.update_idletasks()
+            req_w = max(520, self.winfo_reqwidth())
+            req_h = max(480, self.winfo_reqheight())
+            x = (self.winfo_screenwidth() // 2) - (req_w // 2)
+            y = (self.winfo_screenheight() // 2) - (req_h // 2)
+            self.geometry(f"{req_w}x{req_h}+{x}+{y}")
+            self.minsize(500, 460)
+        except Exception:
+            pass
+
+        # Keep window modal/above the (hidden) root
+        try:
+            if parent is not None:
+                self.transient(parent)
+        except Exception:
+            pass
+
+        try:
+            self.attributes('-topmost', True)
+        except Exception:
+            pass
+
+        try:
+            self.grab_set()
+        except Exception:
+            pass
+
+        try:
+            self.deiconify()
+            self.focus_set()
         except Exception:
             pass
             
