@@ -143,8 +143,8 @@ class NotificationSystem:
             threading.Thread(target=_fallback_msgbox, daemon=True).start()
             self.logger.info("Mesaj kutusu fallback tetiklendi.")
 
-        # Call immediately; internal toast call is already threaded
-        do_show()
+        # Run the notification display in a separate thread to prevent blocking the main GUI thread.
+        threading.Thread(target=do_show, daemon=True).start()
 
     def _show_messagebox_direct(self, title: str, message: str):
         full_title = f"{self.app_name} - {title}" if title else self.app_name
@@ -195,7 +195,7 @@ class NotificationSystem:
 
             # Build or update the shortcut using ShellLink and set AppUserModel.ID
             import pythoncom
-            from win32com.shell import shell, shellcon  # noqa: F401
+            from win32com.shell import shell, shellcon  # noqa: F4401
             from win32com.propsys import propsys, pscon
 
             link = pythoncom.CoCreateInstance(
@@ -220,4 +220,4 @@ class NotificationSystem:
             self.logger.info(f"Start Menu kısayolu oluşturuldu (AUMID set): {lnk_path}")
         except Exception as e:
             self.logger.warning(f"Start Menu kısayolu/AUMID ayarlanamadı (devam): {e}")
-
+  

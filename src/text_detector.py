@@ -9,6 +9,11 @@ import os
 import pyperclip
 from src.contextual_toolbar import ContextualToolbar
 
+try:
+    import uiautomation as auto
+except ImportError:
+    auto = None
+
 class TextDetector:
     def __init__(self, api_handler, notification_system, tk_root):
         self.api_handler = api_handler
@@ -81,6 +86,28 @@ class TextDetector:
             
         return False
 
+    def _is_valid_editable_field(self, x, y):
+        try:
+            if auto:
+                ctrl = auto.ControlFromPoint(x, y)
+                if ctrl:
+                    top_level_ctrl = ctrl.GetTopLevelControl()
+                    if top_level_ctrl:
+                        top_level_name = top_level_ctrl.Name or ""
+                        if "Gelen Kutusu" in top_level_name:
+                            return False
+
+            hwnd = win32gui.WindowFromPoint((x, y))
+            if hwnd:
+                class_name = win32gui.GetClassName(hwnd)
+                if class_name == '_WwG':
+                    return True
+
+            return False
+        except Exception as e:
+            self.logger.error(f"Düzenlenebilir alan kontrol hatası: {e}")
+            return False
+
     def check_text_selection(self):
         try:
             left_button_state = win32api.GetKeyState(win32con.VK_LBUTTON)
@@ -110,6 +137,10 @@ class TextDetector:
             time.sleep(0.05)
             
             end_pos = win32gui.GetCursorPos()
+
+            if not self._is_valid_editable_field(end_pos[0], end_pos[1]):
+                return
+
             did_drag = False
             if self.selection_start_pos is not None and end_pos is not None:
                 try:

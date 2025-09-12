@@ -9,4 +9,5 @@ pyinstaller
 win10toast-click
 win10toast
 winotify
+uiautomation
   
