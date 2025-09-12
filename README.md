@@ -33,7 +33,7 @@ CopyPolish, **Microsoft Outlook** içinde çalışan, seçtiğiniz metinleri an�
 ## 📁 Proje Yapısı
 
 ```
-CopyPolish2/
+CopyPolish/
 ├── main.py                 # Ana uygulama dosyası
 ├── src/
 │   ├── api_handler.py      # OpenRouter API entegrasyonu
@@ -54,7 +54,7 @@ Projeyi kaynak kodundan çalıştırmak veya geliştirmek isterseniz:
 1.  **Projeyi klonlayın:**
     ```bash
     # git clone ...
-    cd CopyPolish2
+    cd CopyPolish
     ```
 
 2.  **Gerekli kütüphaneleri yükleyin:**
