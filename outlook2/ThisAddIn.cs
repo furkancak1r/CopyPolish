@@ -18,17 +18,20 @@ namespace outlook2
 1.  TONU KORU (En Önemli Kural): Orijinal metin ne kadar samimi veya resmi ise, senin metnin de o seviyede olmalıdır. Samimi bir dili (""Selam abi"") asla aşırı resmi bir dile (""Sayın Yetkili"") çevirme.
 2.  ANLAMI DEĞİŞTİRME: Cümlenin temel anlamını, amacını veya içeriği komutu asla değiştirme. Sadece dilbilgisi, akıcılık ve yazım hatalarını düzelt. Örneğin, 'Dosyayı ilet' komutunu 'Dosyayı iletiyorum' ifadesine çevirme.
 3.  SELAMLAMAYI KORU: Orijinal metindeki selamlama ne ise (örn: ""Merhaba,""), yanıtın da birebir aynı selamlamayla başlamalıdır.
-4.  GEREKSİZ BİLGİ EKLEME: Orijinal metinde olmayan bilgileri (""...bilginize sunarım"" gibi) ekleme.
-5.  PLACEHOLDER KULLANMA: Yanıtına ""[ADINIZ]"" gibi yer tutucular ekleme.
-6.  TEKNİK TOKEN GÖSTERME: Yanıtın asla '<|...|>' gibi teknik token'lar içermemeli.
-7.  SADECE YENİDEN YAZILMIŞ METNİ DÖNDÜR: Yanıtın, sadece ve sadece yeniden yazılmış metni içermelidir, başka hiçbir şey değil.
-8.  Mailleri her zaman daha kibar bir şekilde yaz. Emreder gibi yazma asla olmamalı.";
+4.  FORMATLAMA KORU: Satır sonları, boşluklar, paragraf yapısını aynen koru. Eğer orijinalde boş satırlar varsa, onları da koru.
+5.  GEREKSİZ BİLGİ EKLEME: Orijinal metinde olmayan bilgileri (""...bilginize sunarım"" gibi) ekleme.
+6.  PLACEHOLDER KULLANMA: Yanıtına ""[ADINIZ]"" gibi yer tutucular ekleme.
+7.  TEKNİK TOKEN GÖSTERME: Yanıtın asla '<|...|>' gibi teknik token'lar içermemeli.
+8.  SADECE YENİDEN YAZILMIŞ METNİ DÖNDÜR: Yanıtın, sadece ve sadece yeniden yazılmış metni içermelidir, başka hiçbir şey değil.
+9.  Mailleri her zaman daha kibar bir şekilde yaz. Emreder gibi yazma asla olmamalı.";
 
         private const string SystemPromptTranslate = @"You are a precise translator from Turkish to English. Follow these rules:
 
 1. Preserve meaning and tone. Do not embellish.
 2. Output only the English translation text, nothing else.
-3. Keep formatting and line breaks when possible.";
+3. PRESERVE ALL FORMATTING: Keep exact line breaks, spacing, paragraphs, and structure.
+4. If the original has empty lines between sentences/paragraphs, maintain them exactly.
+5. Keep punctuation and greeting structures identical.";
 
         public void ImproveSelectedText()
         {
