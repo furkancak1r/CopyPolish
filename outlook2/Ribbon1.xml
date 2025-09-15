@@ -8,7 +8,11 @@
                   label="Seçili Metni Göster"
                   size="large"
                   getImage="GetButtonImage"
-                  onAction="OnShowTextButtonClick"/>
+                  onAction="OnImproveSelectionClick"/>
+          <button id="btnTranslateTrEn"
+                  label="TR > EN"
+                  size="normal"
+                  onAction="OnTranslateTrEnClick"/>
           <button id="btnCopyPolishSettings"
                   label="CopyPolish Ayarları"
                   size="normal"

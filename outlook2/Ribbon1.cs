@@ -32,9 +32,14 @@ namespace outlook2
             this.ribbon = ribbonUI;
         }
 
-        public void OnShowTextButtonClick(Office.IRibbonControl control)
+        public void OnImproveSelectionClick(Office.IRibbonControl control)
         {
-            Globals.ThisAddIn.ShowSelectedText();
+            Globals.ThisAddIn.ImproveSelectedText();
+        }
+
+        public void OnTranslateTrEnClick(Office.IRibbonControl control)
+        {
+            Globals.ThisAddIn.TranslateSelectedTextTrEn();
         }
 
         public void OnCopyPolishSettingsClick(Office.IRibbonControl control)
@@ -93,6 +98,25 @@ namespace outlook2
             }
             catch { }
 
+            return null;
+        }
+
+        public string GetButtonLabel(Office.IRibbonControl control)
+        {
+            try
+            {
+                if (control == null) return null;
+                switch (control.Id)
+                {
+                    case "btnShowSelectedText":
+                        return "İyileştir";
+                    case "btnTranslateTrEn":
+                        return "TR > EN";
+                    case "btnCopyPolishSettings":
+                        return "CopyPolish Ayarları";
+                }
+            }
+            catch { }
             return null;
         }
 
