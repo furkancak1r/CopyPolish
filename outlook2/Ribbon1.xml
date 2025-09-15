@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="Ribbon_Load">
+  <ribbon>
+    <tabs>
+      <tab idMso="TabNewMailMessage">
+        <group id="MyGroup" label="My Group">
+          <button id="btnShowSelectedText"
+                  label="Seçili Metni Göster"
+                  size="large"
+                  onAction="OnShowTextButtonClick"/>
+        </group>
+      </tab>
+    </tabs>
+  </ribbon>
+</customUI>
+

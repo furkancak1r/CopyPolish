@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36414.22 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "outlook2", "outlook2\outlook2.csproj", "{C9EDD439-18EC-427B-9B84-226700738860}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C9EDD439-18EC-427B-9B84-226700738860}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9EDD439-18EC-427B-9B84-226700738860}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9EDD439-18EC-427B-9B84-226700738860}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9EDD439-18EC-427B-9B84-226700738860}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E85F2D6E-13DF-45E8-A5F5-A9A56087F222}
+	EndGlobalSection
+EndGlobal
