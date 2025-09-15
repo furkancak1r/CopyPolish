@@ -117,4 +117,13 @@
   <data name="icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\..\icon.ico;System.Drawing.Icon, System.Drawing</value>
   </data>
+  <data name="IYILESTIR" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\IYILESTIR.ico;System.Drawing.Icon, System.Drawing</value>
+  </data>
+  <data name="EN_TR" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\EN-TR.ico;System.Drawing.Icon, System.Drawing</value>
+  </data>
+  <data name="AYARLAR" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\AYARLAR.ico;System.Drawing.Icon, System.Drawing</value>
+  </data>
 </root>

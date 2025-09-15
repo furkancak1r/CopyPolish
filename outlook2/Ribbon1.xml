@@ -1,26 +1,35 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="Ribbon_Load">
   <ribbon>
     <tabs>
       <tab idMso="TabNewMailMessage">
         <group id="MyGroup" label="My Group">
-          <button id="btnShowSelectedText"
-                  label="Seçili Metni Göster"
-                  size="large"
-                  getImage="GetButtonImage"
-                  onAction="OnImproveSelectionClick"/>
-          <button id="btnTranslateTrEn"
-                  label="TR > EN"
-                  size="normal"
-                  onAction="OnTranslateTrEnClick"/>
-          <button id="btnCopyPolishSettings"
-                  label="CopyPolish Ayarları"
-                  size="normal"
-                  onAction="OnCopyPolishSettingsClick"/>
+          <box id="mainRow" boxStyle="horizontal">
+            <button id="btnShowSelectedText"
+                    label="&#304;yile&#351;tir"
+                    size="large"
+                    showImage="true"
+                    showLabel="false"
+                    getImage="GetButtonImage"
+                    onAction="OnImproveSelectionClick"/>
+            <button id="btnTranslateTrEn"
+                    label="Çeviri"
+                    size="large"
+                    showImage="true"
+                    showLabel="false"
+                    getImage="GetButtonImage"
+                    onAction="OnTranslateTrEnClick"/>
+            <button id="btnCopyPolishSettings"
+                    label="Ayarlar"
+                    size="large"
+                    showImage="true"
+                    showLabel="true"
+                    getImage="GetButtonImage"
+                    onAction="OnCopyPolishSettingsClick"/>
+          </box>
         </group>
       </tab>
     </tabs>
   </ribbon>
+  
 </customUI>
-
-

@@ -244,6 +244,20 @@
   <ItemGroup>
     <EmbeddedResource Include="Ribbon1.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\AYARLAR.ico">
+      <Link>AYARLAR.ico</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\EN-TR.ico">
+      <Link>EN-TR.ico</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\IYILESTIR.ico">
+      <Link>IYILESTIR.ico</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

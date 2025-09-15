@@ -10,6 +10,8 @@ using Office = Microsoft.Office.Core;
 using Outlook = Microsoft.Office.Interop.Outlook;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using stdole;
 namespace outlook2
 {
@@ -61,38 +63,63 @@ namespace outlook2
         {
             try
             {
-                if (control != null && control.Id == "btnShowSelectedText")
+                if (control == null) return null;
+
+                string fileName = null;
+                string resourceName = null;
+                switch (control.Id)
                 {
-                    // Try to load from resources by name "icon"
-                    object obj = outlook2.Properties.Resources.ResourceManager.GetObject("icon");
-                    Image img = null;
+                    case "btnShowSelectedText":
+                        fileName = "IYILESTIR.ico";
+                        resourceName = "IYILESTIR";
+                        break;
+                    case "btnTranslateTrEn":
+                        fileName = "EN-TR.ico";
+                        resourceName = "EN_TR";
+                        break;
+                    case "btnCopyPolishSettings":
+                        fileName = "AYARLAR.ico";
+                        resourceName = "AYARLAR";
+                        break;
+                }
 
-                    if (obj is Icon icn)
-                    {
-                        img = icn.ToBitmap();
-                    }
-                    else if (obj is Bitmap bmp)
-                    {
-                        img = bmp;
-                    }
+                Image img = null;
 
-                    // Fallback to file path if resource missing
-                    if (img == null)
+                // Try embedded resources first
+                if (!string.IsNullOrEmpty(resourceName))
+                {
+                    object res = outlook2.Properties.Resources.ResourceManager.GetObject(resourceName);
+                    if (res is Icon ricn)
                     {
-                        string baseDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                        string iconPath = Path.Combine(baseDir ?? string.Empty, "icon.ico");
-                        if (File.Exists(iconPath))
+                        img = ricn.ToBitmap();
+                    }
+                    else if (res is Bitmap rbmp)
+                    {
+                        img = rbmp;
+                    }
+                }
+
+                // Load from output directory first using the provided .ico files
+                if (img == null && !string.IsNullOrEmpty(fileName))
+                {
+                    string baseDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    string iconPath = Path.Combine(baseDir ?? string.Empty, fileName);
+                    if (File.Exists(iconPath))
+                    {
+                        using (var iconFromFile = new Icon(iconPath))
                         {
-                            using (var iconFromFile = new Icon(iconPath))
-                            {
-                                img = iconFromFile.ToBitmap();
-                            }
+                            img = iconFromFile.ToBitmap();
                         }
                     }
+                }
 
-                    if (img != null)
+                if (img != null)
+                {
+                    // Render at 32x32; Ribbon will scale if needed
+                    int target = 32;
+                    using (var sized = ResizeImage(img, target, target))
                     {
-                        return PictureConverter.ImageToPictureDisp(img);
+                        return PictureConverter.ImageToPictureDisp(new Bitmap(sized));
                     }
                 }
             }
@@ -147,6 +174,19 @@ namespace outlook2
             {
                 return (IPictureDisp)AxHost.GetIPictureDispFromPicture(image);
             }
+        }
+        private static Bitmap ResizeImage(Image source, int width, int height)
+        {
+            var bmp = new Bitmap(width, height, PixelFormat.Format32bppPArgb);
+            using (var g = Graphics.FromImage(bmp))
+            {
+                g.SmoothingMode = SmoothingMode.AntiAlias;
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                g.Clear(Color.Transparent);
+                g.DrawImage(source, new Rectangle(0, 0, width, height));
+            }
+            return bmp;
         }
     }
 }
