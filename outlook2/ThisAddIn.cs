@@ -185,6 +185,8 @@ namespace outlook2
                 if (sel != null)
                 {
                     sel.Text = newText;
+                    sel.Collapse(Word.WdCollapseDirection.wdCollapseEnd);
+                    sel.TypeText("\n");
                 }
             }
             catch { }
