@@ -4,7 +4,7 @@
 
         public string GetCustomUI(string ribbonID)
         {
-            // Debug için hangi ribbonID'lerin geldiðini logluyoruz
+            // Debug iï¿½in hangi ribbonID'lerin geldiï¿½ini logluyoruz
             try
             {
                 System.IO.File.AppendAllText(@"C:\temp\ribbonlog.txt", 
@@ -12,8 +12,8 @@
             }
             catch { }
             
-            // Tüm ribbon'lar için XML döndür
-            return GetResourceText("outlook2.Ribbon1.xml");
+            // Tï¿½m ribbon'lar iï¿½in XML dï¿½ndï¿½r
+            return GetResourceText("CopyPolish.Ribbon1.xml");
         }
 
         public void Ribbon_Load(Office.IRibbonUI ribbonUI)
