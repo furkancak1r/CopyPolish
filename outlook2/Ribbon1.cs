@@ -37,6 +37,21 @@ namespace outlook2
             Globals.ThisAddIn.ShowSelectedText();
         }
 
+        public void OnCopyPolishSettingsClick(Office.IRibbonControl control)
+        {
+            try
+            {
+                using (var form = new SettingsForm())
+                {
+                    form.ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ayarlar penceresi açılamadı:\n" + ex.Message, "Hata");
+            }
+        }
+
         public IPictureDisp GetButtonImage(Office.IRibbonControl control)
         {
             try

@@ -9,6 +9,10 @@
                   size="large"
                   getImage="GetButtonImage"
                   onAction="OnShowTextButtonClick"/>
+          <button id="btnCopyPolishSettings"
+                  label="CopyPolish Ayarları"
+                  size="normal"
+                  onAction="OnCopyPolishSettingsClick"/>
         </group>
       </tab>
     </tabs>
