@@ -59,72 +59,9 @@ namespace outlook2
             }
         }
 
+        // GetButtonImage artık kullanılmıyor - imageMso ile Office built-in simgeleri kullanılıyor
         public IPictureDisp GetButtonImage(Office.IRibbonControl control)
         {
-            try
-            {
-                if (control == null) return null;
-
-                string fileName = null;
-                string resourceName = null;
-                switch (control.Id)
-                {
-                    case "btnShowSelectedText":
-                        fileName = "IYILESTIR.ico";
-                        resourceName = "IYILESTIR";
-                        break;
-                    case "btnTranslateTrEn":
-                        fileName = "EN-TR.ico";
-                        resourceName = "EN_TR";
-                        break;
-                    case "btnCopyPolishSettings":
-                        fileName = "AYARLAR.ico";
-                        resourceName = "AYARLAR";
-                        break;
-                }
-
-                Image img = null;
-
-                // Try embedded resources first
-                if (!string.IsNullOrEmpty(resourceName))
-                {
-                    object res = outlook2.Properties.Resources.ResourceManager.GetObject(resourceName);
-                    if (res is Icon ricn)
-                    {
-                        img = ricn.ToBitmap();
-                    }
-                    else if (res is Bitmap rbmp)
-                    {
-                        img = rbmp;
-                    }
-                }
-
-                // Load from output directory first using the provided .ico files
-                if (img == null && !string.IsNullOrEmpty(fileName))
-                {
-                    string baseDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                    string iconPath = Path.Combine(baseDir ?? string.Empty, fileName);
-                    if (File.Exists(iconPath))
-                    {
-                        using (var iconFromFile = new Icon(iconPath))
-                        {
-                            img = iconFromFile.ToBitmap();
-                        }
-                    }
-                }
-
-                if (img != null)
-                {
-                    // Render at 32x32; Ribbon will scale if needed
-                    int target = 32;
-                    using (var sized = ResizeImage(img, target, target))
-                    {
-                        return PictureConverter.ImageToPictureDisp(new Bitmap(sized));
-                    }
-                }
-            }
-            catch { }
-
             return null;
         }
 
@@ -138,7 +75,7 @@ namespace outlook2
                     case "btnShowSelectedText":
                         return "İyileştir";
                     case "btnTranslateTrEn":
-                        return "TR > EN";
+                        return "Çeviri";
                     case "btnCopyPolishSettings":
                         return "CopyPolish Ayarları";
                 }

@@ -3,28 +3,28 @@
   <ribbon>
     <tabs>
       <tab idMso="TabNewMailMessage">
-        <group id="MyGroup" label="My Group">
+        <group id="MyGroup" label="CopyPolish">
           <box id="mainRow" boxStyle="horizontal">
             <button id="btnShowSelectedText"
                     label="&#304;yile&#351;tir"
                     size="large"
                     showImage="true"
                     showLabel="false"
-                    getImage="GetButtonImage"
+                    imageMso="ReviewingPane"
                     onAction="OnImproveSelectionClick"/>
             <button id="btnTranslateTrEn"
                     label="Çeviri"
                     size="large"
                     showImage="true"
                     showLabel="false"
-                    getImage="GetButtonImage"
+                    imageMso="Translate"
                     onAction="OnTranslateTrEnClick"/>
             <button id="btnCopyPolishSettings"
                     label="Ayarlar"
                     size="large"
                     showImage="true"
                     showLabel="true"
-                    getImage="GetButtonImage"
+                    imageMso="ApplicationOptionsDialog"
                     onAction="OnCopyPolishSettingsClick"/>
           </box>
         </group>

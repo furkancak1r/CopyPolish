@@ -124,6 +124,12 @@
     <value>..\..\EN-TR.ico;System.Drawing.Icon, System.Drawing</value>
   </data>
   <data name="AYARLAR" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\..\AYARLAR.ico;System.Drawing.Icon, System.Drawing</value>
+    <value>..\..\AYARLAR.png;System.Drawing.Bitmap, System.Drawing</value>
+  </data>
+  <data name="CEVIRI" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\CEVIRI.png;System.Drawing.Bitmap, System.Drawing</value>
+  </data>
+  <data name="IYILESTIR_PNG" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\IYILESTIR.png;System.Drawing.Bitmap, System.Drawing</value>
   </data>
 </root>
