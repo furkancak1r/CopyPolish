@@ -1,4 +1,4 @@
-﻿<!-- // C:/Users/furkan.cakir/Desktop/FurkanPRS/Kodlar/Projeler/test/outlook2/outlook2/outlook2.csproj -->
+<!-- // C:/Users/furkan.cakir/Desktop/FurkanPRS/Kodlar/Projeler/test/outlook2/outlook2/outlook2.csproj -->
 <Project ToolsVersion="17.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <!--
@@ -246,6 +246,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Ribbon1.xml" />
+    <EmbeddedResource Include="RibbonCompose.xml" />
+    <EmbeddedResource Include="RibbonRead.xml" />
+    <EmbeddedResource Include="RibbonExplorer.xml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

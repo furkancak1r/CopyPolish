@@ -1,53 +1,114 @@
-﻿// C:/Users/furkan.cakir/Desktop/FurkanPRS/Kodlar/Projeler/test/outlook2/outlook2/Ribbon1.cs
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
-using Office = Microsoft.Office.Core;
-using Outlook = Microsoft.Office.Interop.Outlook;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using Office = Microsoft.Office.Core;
+using Outlook = Microsoft.Office.Interop.Outlook;
 using stdole;
+
 namespace outlook2
 {
     [ComVisible(true)]
     public class Ribbon1 : Office.IRibbonExtensibility
     {
         private Office.IRibbonUI ribbon;
+        internal static Office.IRibbonUI RibbonUI;
 
-        public Ribbon1()
-        {
-        }
+        public Ribbon1() { }
 
         public string GetCustomUI(string ribbonID)
         {
-            return GetResourceText("outlook2.Ribbon1.xml");
+            try
+            {
+                Log($"--- GetCustomUI called for RibbonID = {ribbonID} ---");
+                string resourceName = "";
+                switch (ribbonID)
+                {
+                    case "Microsoft.Outlook.Mail.Compose":
+                        resourceName = "outlook2.RibbonCompose.xml";
+                        break;
+                    case "Microsoft.Outlook.Mail.Read":
+                        resourceName = "outlook2.RibbonRead.xml";
+                        break;
+                    case "Microsoft.Outlook.Explorer":
+                        resourceName = "outlook2.RibbonExplorer.xml";
+                        break;
+                    default:
+                        Log($"  -> Unknown RibbonID. Falling back to default.");
+                        resourceName = "outlook2.Ribbon1.xml";
+                        break;
+                }
+
+                Log($"  -> Mapped to resource: {resourceName}");
+                string xmlContent = GetResourceText(resourceName);
+
+                if (string.IsNullOrEmpty(xmlContent))
+                {
+                    Log($"  -> CRITICAL: GetResourceText returned NULL or EMPTY for {resourceName}. Ensure it's an Embedded Resource.");
+                }
+                else
+                {
+                    Log($"  -> Returning XML content. Length: {xmlContent.Length}");
+                }
+                return xmlContent;
+            }
+            catch (Exception ex)
+            {
+                Log("FATAL ERROR in GetCustomUI", ex);
+                return null;
+            }
         }
 
         public void Ribbon_Load(Office.IRibbonUI ribbonUI)
         {
-            this.ribbon = ribbonUI;
+            try
+            {
+                Log("Ribbon_Load called.");
+                this.ribbon = ribbonUI;
+                RibbonUI = ribbonUI;
+                Log("Ribbon_Load successful.");
+            }
+            catch (Exception ex)
+            {
+                Log("ERROR in Ribbon_Load", ex);
+            }
         }
 
         public void OnImproveSelectionClick(Office.IRibbonControl control)
         {
-            Globals.ThisAddIn.ImproveSelectedText();
+            try
+            {
+                Log($"OnImproveSelectionClick triggered by control: {control?.Id}");
+                Globals.ThisAddIn.ImproveSelectedText();
+            }
+            catch (Exception ex)
+            {
+                Log("ERROR in OnImproveSelectionClick", ex);
+            }
         }
 
         public void OnTranslateTrEnClick(Office.IRibbonControl control)
         {
-            Globals.ThisAddIn.TranslateSelectedTextTrEn();
+            try
+            {
+                Log($"OnTranslateTrEnClick triggered by control: {control?.Id}");
+                Globals.ThisAddIn.TranslateSelectedTextTrEn();
+            }
+            catch (Exception ex)
+            {
+                Log("ERROR in OnTranslateTrEnClick", ex);
+            }
         }
 
         public void OnCopyPolishSettingsClick(Office.IRibbonControl control)
         {
             try
             {
+                Log($"OnCopyPolishSettingsClick triggered by control: {control?.Id}");
                 using (var form = new SettingsForm())
                 {
                     form.ShowDialog();
@@ -55,11 +116,68 @@ namespace outlook2
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ayarlar penceresi açılamadı:\n" + ex.Message, "Hata");
+                Log("ERROR in OnCopyPolishSettingsClick", ex);
+                MessageBox.Show("Ayarlar penceresi açılırken hata oluştu:\n" + ex.Message, "Hata");
             }
         }
 
-        // GetButtonImage artık kullanılmıyor - imageMso ile Office built-in simgeleri kullanılıyor
+        public bool GetSelectionDependentEnabled(Office.IRibbonControl control)
+        {
+            try
+            {
+                bool isEnabled = Globals.ThisAddIn.GetActiveWordDocument() != null;
+                Log($"GetSelectionDependentEnabled called for '{control?.Id}'. Returning {isEnabled}.");
+                return isEnabled;
+            }
+            catch (Exception ex)
+            {
+                Log("ERROR in GetSelectionDependentEnabled", ex);
+                return false;
+            }
+        }
+
+        public bool IsExplorerSelectionEnabled_Final(Office.IRibbonControl control)
+        {
+            Outlook.Selection selection = null;
+            try
+            {
+                selection = Globals.ThisAddIn.Application.ActiveExplorer()?.Selection;
+                bool isEnabled = selection != null && selection.Count > 0;
+                Log($"IsExplorerSelectionEnabled_Final called for '{control?.Id}'. Selection count > 0: {isEnabled}.");
+                return isEnabled;
+            }
+            catch (Exception ex)
+            {
+                Log("ERROR in IsExplorerSelectionEnabled_Final", ex);
+                return false;
+            }
+            finally
+            {
+                if (selection != null)
+                {
+                    Marshal.ReleaseComObject(selection);
+                }
+            }
+        }
+
+        public static void Invalidate()
+        {
+            try { RibbonUI?.Invalidate(); } catch { }
+        }
+
+        public static void ActivateTab(string idMso)
+        {
+            try
+            {
+                Log($"ActivateTab requested: {idMso}");
+                RibbonUI?.ActivateTabMso(idMso);
+            }
+            catch (Exception ex)
+            {
+                Log($"ERROR in ActivateTab for {idMso}", ex);
+            }
+        }
+
         public IPictureDisp GetButtonImage(Office.IRibbonControl control)
         {
             return null;
@@ -80,8 +198,30 @@ namespace outlook2
                         return "CopyPolish Ayarları";
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Log("ERROR in GetButtonLabel", ex);
+            }
             return null;
+        }
+
+        private static void Log(string msg, Exception ex = null)
+        {
+            try
+            {
+                Directory.CreateDirectory(@"C:\temp");
+                string logMessage = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} | {msg}{Environment.NewLine}";
+                if (ex != null)
+                {
+                    logMessage += $"        EXCEPTION: {ex.GetType().Name} - {ex.Message}{Environment.NewLine}";
+                    logMessage += $"        STACKTRACE: {ex.StackTrace}{Environment.NewLine}";
+                }
+                File.AppendAllText(@"C:\temp\ribbonlog.txt", logMessage);
+            }
+            catch
+            {
+                // Logging should never cause the application to crash.
+            }
         }
 
         private static string GetResourceText(string resourceName)
@@ -101,6 +241,7 @@ namespace outlook2
                     }
                 }
             }
+            Log($"CRITICAL: Resource '{resourceName}' not found in assembly. Available resources: {string.Join(", ", resourceNames)}");
             return null;
         }
 
@@ -127,3 +268,4 @@ namespace outlook2
         }
     }
 }
+  

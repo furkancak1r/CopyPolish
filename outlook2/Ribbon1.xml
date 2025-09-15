@@ -3,33 +3,80 @@
   <ribbon>
     <tabs>
       <tab idMso="TabNewMailMessage">
-        <group id="MyGroup" label="CopyPolish">
-          <box id="mainRow" boxStyle="horizontal">
-            <button id="btnShowSelectedText"
-                    label="&#304;yile&#351;tir"
-                    size="large"
-                    showImage="true"
-                    showLabel="false"
-                    imageMso="ReviewingPane"
-                    onAction="OnImproveSelectionClick"/>
-            <button id="btnTranslateTrEn"
-                    label="Çeviri"
-                    size="large"
-                    showImage="true"
-                    showLabel="false"
-                    imageMso="Translate"
-                    onAction="OnTranslateTrEnClick"/>
-            <button id="btnCopyPolishSettings"
-                    label="Ayarlar"
-                    size="large"
-                    showImage="true"
-                    showLabel="true"
-                    imageMso="ApplicationOptionsDialog"
-                    onAction="OnCopyPolishSettingsClick"/>
-          </box>
+        <group id="MyGroup1" label="CopyPolish">
+          <button id="btnShowSelectedText1"
+                  label="&#304;yile&#351;tir"
+                  size="large"
+                  showImage="true"
+                  showLabel="false"
+                  imageMso="ReviewingPane"
+                  onAction="OnImproveSelectionClick"/>
+          <button id="btnTranslateTrEn1"
+                  label="&#199;eviri"
+                  size="large"
+                  showImage="true"
+                  showLabel="false"
+                  imageMso="Translate"
+                  onAction="OnTranslateTrEnClick"/>
+          <button id="btnCopyPolishSettings1"
+                  label="Ayarlar"
+                  size="large"
+                  showImage="true"
+                  showLabel="true"
+                  imageMso="ApplicationOptionsDialog"
+                  onAction="OnCopyPolishSettingsClick"/>
+        </group>
+      </tab>
+      <tab idMso="TabMailMessage">
+        <group id="MyGroup2" label="CopyPolish">
+          <button id="btnShowSelectedText2"
+                  label="&#304;yile&#351;tir"
+                  size="large"
+                  showImage="true"
+                  showLabel="false"
+                  imageMso="ReviewingPane"
+                  onAction="OnImproveSelectionClick"/>
+          <button id="btnTranslateTrEn2"
+                  label="&#199;eviri"
+                  size="large"
+                  showImage="true"
+                  showLabel="false"
+                  imageMso="Translate"
+                  onAction="OnTranslateTrEnClick"/>
+          <button id="btnCopyPolishSettings2"
+                  label="Ayarlar"
+                  size="large"
+                  showImage="true"
+                  showLabel="true"
+                  imageMso="ApplicationOptionsDialog"
+                  onAction="OnCopyPolishSettingsClick"/>
+        </group>
+      </tab>
+      <tab idMso="TabReadMessage">
+        <group id="MyGroup4" label="CopyPolish">
+          <button id="btnShowSelectedText4"
+                  label="&#304;yile&#351;tir"
+                  size="large"
+                  showImage="true"
+                  showLabel="false"
+                  imageMso="ReviewingPane"
+                  onAction="OnImproveSelectionClick"/>
+          <button id="btnTranslateTrEn4"
+                  label="&#199;eviri"
+                  size="large"
+                  showImage="true"
+                  showLabel="false"
+                  imageMso="Translate"
+                  onAction="OnTranslateTrEnClick"/>
+          <button id="btnCopyPolishSettings4"
+                  label="Ayarlar"
+                  size="large"
+                  showImage="true"
+                  showLabel="true"
+                  imageMso="ApplicationOptionsDialog"
+                  onAction="OnCopyPolishSettingsClick"/>
         </group>
       </tab>
     </tabs>
   </ribbon>
-  
 </customUI>

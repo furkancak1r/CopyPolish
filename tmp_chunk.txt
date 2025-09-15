@@ -1,0 +1,22 @@
+        public Ribbon1()
+        {
+        }
+
+        public string GetCustomUI(string ribbonID)
+        {
+            // Debug için hangi ribbonID'lerin geldiðini logluyoruz
+            try
+            {
+                System.IO.File.AppendAllText(@"C:\temp\ribbonlog.txt", 
+                    $"{DateTime.Now}: RibbonID = {ribbonID}\n");
+            }
+            catch { }
+            
+            // Tüm ribbon'lar için XML döndür
+            return GetResourceText("outlook2.Ribbon1.xml");
+        }
+
+        public void Ribbon_Load(Office.IRibbonUI ribbonUI)
+        {
+            this.ribbon = ribbonUI;
+        }
