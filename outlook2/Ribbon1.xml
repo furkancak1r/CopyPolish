@@ -7,10 +7,12 @@
           <button id="btnShowSelectedText"
                   label="Seçili Metni Göster"
                   size="large"
+                  getImage="GetButtonImage"
                   onAction="OnShowTextButtonClick"/>
         </group>
       </tab>
     </tabs>
   </ribbon>
 </customUI>
+
 

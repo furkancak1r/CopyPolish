@@ -1,0 +1,39 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.cache
+*.log
+
+# Build outputs
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+*.vsto
+*.manifest
+
+# Office Add-in specific
+*.vsto
+*.manifest
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+
+# IDE
+.vscode/
+.idea/
+
+# NuGet
+packages/
+*.nupkg
+
+# Logs
+logs/
+*.log

@@ -9,6 +9,8 @@ using System.Text;
 using Office = Microsoft.Office.Core;
 using Outlook = Microsoft.Office.Interop.Outlook;
 using System.Windows.Forms;
+using System.Drawing;
+using stdole;
 namespace outlook2
 {
     [ComVisible(true)]
@@ -35,6 +37,50 @@ namespace outlook2
             Globals.ThisAddIn.ShowSelectedText();
         }
 
+        public IPictureDisp GetButtonImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                if (control != null && control.Id == "btnShowSelectedText")
+                {
+                    // Try to load from resources by name "icon"
+                    object obj = outlook2.Properties.Resources.ResourceManager.GetObject("icon");
+                    Image img = null;
+
+                    if (obj is Icon icn)
+                    {
+                        img = icn.ToBitmap();
+                    }
+                    else if (obj is Bitmap bmp)
+                    {
+                        img = bmp;
+                    }
+
+                    // Fallback to file path if resource missing
+                    if (img == null)
+                    {
+                        string baseDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                        string iconPath = Path.Combine(baseDir ?? string.Empty, "icon.ico");
+                        if (File.Exists(iconPath))
+                        {
+                            using (var iconFromFile = new Icon(iconPath))
+                            {
+                                img = iconFromFile.ToBitmap();
+                            }
+                        }
+                    }
+
+                    if (img != null)
+                    {
+                        return PictureConverter.ImageToPictureDisp(img);
+                    }
+                }
+            }
+            catch { }
+
+            return null;
+        }
+
         private static string GetResourceText(string resourceName)
         {
             Assembly asm = Assembly.GetExecutingAssembly();
@@ -53,6 +99,15 @@ namespace outlook2
                 }
             }
             return null;
+        }
+
+        private class PictureConverter : AxHost
+        {
+            private PictureConverter() : base("") { }
+            public static IPictureDisp ImageToPictureDisp(Image image)
+            {
+                return (IPictureDisp)AxHost.GetIPictureDispFromPicture(image);
+            }
         }
     }
 }
