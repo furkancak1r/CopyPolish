@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using Outlook = Microsoft.Office.Interop.Outlook;
 using Office = Microsoft.Office.Core;
 using System.Windows.Forms;
+using System.Threading.Tasks;
 using Word = Microsoft.Office.Interop.Word;
 
 namespace outlook2
@@ -68,15 +69,44 @@ namespace outlook2
                     "Seçili bölüm aşağıdadır. Sadece bunun düzeltilmiş halini, başka bir şey olmadan döndür.\n" +
                     "<SELECTION>\n" + selectedText + "\n</SELECTION>";
 
-                string improved = OpenRouterClient.Complete(
-                    apiKey,
-                    ModelName,
-                    SystemPromptImprove,
-                    userContent,
-                    referer: "https://local.copy-polish",
-                    title: "CopyPolish Outlook Add-in");
+                var loading = new LoadingForm("Yapay zekadan yanıt bekleniyor...");
+                loading.Show();
+                Cursor.Current = Cursors.WaitCursor;
 
-                ReplaceSelectionText(doc, improved);
+                Task.Run(() =>
+                {
+                    return OpenRouterClient.Complete(
+                        apiKey,
+                        ModelName,
+                        SystemPromptImprove,
+                        userContent,
+                        referer: "https://local.copy-polish",
+                        title: "CopyPolish Outlook Add-in");
+                })
+                .ContinueWith(t =>
+                {
+                    loading.BeginInvoke((Action)(() =>
+                    {
+                        try
+                        {
+                            if (t.IsFaulted)
+                            {
+                                var err = t.Exception?.GetBaseException()?.Message ?? "Bilinmeyen hata";
+                                MessageBox.Show("İşlem sırasında hata oluştu:\n" + err, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                            else
+                            {
+                                ReplaceSelectionText(doc, t.Result);
+                            }
+                        }
+                        finally
+                        {
+                            Cursor.Current = Cursors.Default;
+                            loading.Close();
+                            loading.Dispose();
+                        }
+                    }));
+                });
             }
             catch (System.Runtime.InteropServices.COMException ex) when ((uint)ex.HResult == 0x800A180E)
             {
@@ -123,15 +153,44 @@ namespace outlook2
                     "Selected segment to translate:\n" +
                     "<SELECTION>\n" + selectedText + "\n</SELECTION>";
 
-                string translated = OpenRouterClient.Complete(
-                    apiKey,
-                    ModelName,
-                    SystemPromptTranslate,
-                    userContent,
-                    referer: "https://local.copy-polish",
-                    title: "CopyPolish Outlook Add-in");
+                var loading = new LoadingForm("Çeviri yapılıyor, lütfen bekleyin...");
+                loading.Show();
+                Cursor.Current = Cursors.WaitCursor;
 
-                ReplaceSelectionText(doc, translated);
+                Task.Run(() =>
+                {
+                    return OpenRouterClient.Complete(
+                        apiKey,
+                        ModelName,
+                        SystemPromptTranslate,
+                        userContent,
+                        referer: "https://local.copy-polish",
+                        title: "CopyPolish Outlook Add-in");
+                })
+                .ContinueWith(t =>
+                {
+                    loading.BeginInvoke((Action)(() =>
+                    {
+                        try
+                        {
+                            if (t.IsFaulted)
+                            {
+                                var err = t.Exception?.GetBaseException()?.Message ?? "Bilinmeyen hata";
+                                MessageBox.Show("Çeviri sırasında hata oluştu:\n" + err, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                            else
+                            {
+                                ReplaceSelectionText(doc, t.Result);
+                            }
+                        }
+                        finally
+                        {
+                            Cursor.Current = Cursors.Default;
+                            loading.Close();
+                            loading.Dispose();
+                        }
+                    }));
+                });
             }
             catch (System.Runtime.InteropServices.COMException ex) when ((uint)ex.HResult == 0x800A180E)
             {

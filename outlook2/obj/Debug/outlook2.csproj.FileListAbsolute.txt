@@ -15,9 +15,6 @@ C:\Users\furkan.cakir\Desktop\FurkanPRS\Kodlar\Projeler\test\outlook2\outlook2\o
 C:\Users\furkan.cakir\Desktop\FurkanPRS\Kodlar\Projeler\test\outlook2\outlook2\obj\Debug\outlook2.csproj.Up2Date
 C:\Users\furkan.cakir\Desktop\FurkanPRS\Kodlar\Projeler\test\outlook2\outlook2\obj\Debug\outlook2.dll
 C:\Users\furkan.cakir\Desktop\FurkanPRS\Kodlar\Projeler\test\outlook2\outlook2\obj\Debug\outlook2.pdb
-C:\Users\furkan.cakir\Desktop\FurkanPRS\Kodlar\Projeler\test\CopyPolish\outlook2\bin\Debug\AYARLAR.ico
-C:\Users\furkan.cakir\Desktop\FurkanPRS\Kodlar\Projeler\test\CopyPolish\outlook2\bin\Debug\EN-TR.ico
-C:\Users\furkan.cakir\Desktop\FurkanPRS\Kodlar\Projeler\test\CopyPolish\outlook2\bin\Debug\IYILESTIR.ico
 C:\Users\furkan.cakir\Desktop\FurkanPRS\Kodlar\Projeler\test\CopyPolish\outlook2\bin\Debug\outlook2.dll
 C:\Users\furkan.cakir\Desktop\FurkanPRS\Kodlar\Projeler\test\CopyPolish\outlook2\bin\Debug\outlook2.pdb
 C:\Users\furkan.cakir\Desktop\FurkanPRS\Kodlar\Projeler\test\CopyPolish\outlook2\bin\Debug\outlook2.dll.manifest
