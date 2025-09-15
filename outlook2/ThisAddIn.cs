@@ -17,7 +17,11 @@ namespace outlook2
         private const string SystemPromptImprove = @"Sen, bir e-postanın ana mesajını ve samimiyet tonunu koruyarak onu daha akıcı ve etkili hale getiren bir iletişim asistanısın. Aşağıdaki kurallara harfiyen uymalısın:
 
 1.  TONU KORU (En Önemli Kural): Orijinal metin ne kadar samimi veya resmi ise, senin metnin de o seviyede olmalıdır. Samimi bir dili (""Selam abi"") asla aşırı resmi bir dile (""Sayın Yetkili"") çevirme.
-2.  ANLAMI DEĞİŞTİRME: Cümlenin temel anlamını, amacını veya içeriği komutu asla değiştirme. Sadece dilbilgisi, akıcılık ve yazım hatalarını düzelt. Örneğin, 'Dosyayı ilet' komutunu 'Dosyayı iletiyorum' ifadesine çevirme.
+2.  ANLAMI VE NİYETİ DEĞİŞTİRME: Cümlenin temel anlamını, amacını, isteğini veya sorusunu asla değiştirme. Bağlamı dikkatlice analiz et:
+   - Yarım kalmış komut/istek: ""Dosyayı ilett"" → ""Dosyayı iletir misin?"" (Rica/soru anlamında)
+   - Bilgilendirme: ""Dosyayı ilettim"" → ""Dosyayı ilettim"" (Geçmiş eylem)
+   - Emir: ""Dosyayı ilet"" → ""Lütfen dosyayı iletir misiniz?"" (Kibar rica)
+   Sadece dilbilgisi, akıcılık ve yazım hatalarını düzelt, anlam/niyet değiştirme.
 3.  SELAMLAMAYI KORU: Orijinal metindeki selamlama ne ise (örn: ""Merhaba,""), yanıtın da birebir aynı selamlamayla başlamalıdır.
 4.  FORMATLAMA KORU: Satır sonları, boşluklar, paragraf yapısını aynen koru. Eğer orijinalde boş satırlar varsa, onları da koru.
 5.  GEREKSİZ BİLGİ EKLEME: Orijinal metinde olmayan bilgileri (""...bilginize sunarım"" gibi) ekleme.
@@ -64,7 +68,7 @@ namespace outlook2
                 }
 
                 string userContent =
-                    "Tüm e-posta içeriği aşağıdadır. Bağlam olarak kullan fakat sadece seçili metni düzelt.\n" +
+                    "Tüm e-posta içeriği (konuşma geçmişi ve önceki mesajlar dahil) aşağıdadır. Tüm bağlamı dikkatlice analiz et fakat sadece seçili metni düzelt.\n" +
                     "<EMAIL>\n" + fullText + "\n</EMAIL>\n" +
                     "Seçili bölüm aşağıdadır. Sadece bunun düzeltilmiş halini, başka bir şey olmadan döndür.\n" +
                     "<SELECTION>\n" + selectedText + "\n</SELECTION>";
@@ -148,7 +152,7 @@ namespace outlook2
                 }
 
                 string userContent =
-                    "Use the full email content below only as context. Translate ONLY the selected part from Turkish to English. Output only the translation.\n" +
+                    "Use the full email content below (including conversation history and previous messages) only as context. Analyze the entire context carefully but translate ONLY the selected part from Turkish to English. Output only the translation.\n" +
                     "<EMAIL>\n" + fullText + "\n</EMAIL>\n" +
                     "Selected segment to translate:\n" +
                     "<SELECTION>\n" + selectedText + "\n</SELECTION>";
