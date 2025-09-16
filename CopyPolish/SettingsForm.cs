@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -11,6 +12,7 @@ namespace CopyPolish
         private Button btnToggle;
         private Button btnSave;
         private Button btnClose;
+        private LinkLabel linkOpenRouter;
 
         public SettingsForm()
         {
@@ -19,7 +21,7 @@ namespace CopyPolish
 
         private void InitializeComponent()
         {
-            this.Text = "CopyPolish Ayarları";
+            this.Text = "CopyPolish Ayarlari";
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -29,7 +31,7 @@ namespace CopyPolish
             lblApiKey = new Label
             {
                 AutoSize = true,
-                Text = "API Anahtarı:",
+                Text = "API Anahtari:",
                 Location = new Point(16, 22)
             };
 
@@ -42,14 +44,38 @@ namespace CopyPolish
 
             btnToggle = new Button
             {
-                Text = "Göster",
+                Text = "Goster",
                 Location = new Point(380, 16),
                 Width = 80
             };
             btnToggle.Click += (s, e) =>
             {
                 txtApiKey.UseSystemPasswordChar = !txtApiKey.UseSystemPasswordChar;
-                btnToggle.Text = txtApiKey.UseSystemPasswordChar ? "Göster" : "Gizle";
+                btnToggle.Text = txtApiKey.UseSystemPasswordChar ? "Goster" : "Gizle";
+            };
+
+            linkOpenRouter = new LinkLabel
+            {
+                AutoSize = true,
+                Text = "OpenRouter ucretsiz modeller listesi",
+                Location = new Point(16, 60),
+                TabStop = true
+            };
+            linkOpenRouter.LinkClicked += (s, e) =>
+            {
+                try
+                {
+                    var psi = new ProcessStartInfo
+                    {
+                        FileName = "https://openrouter.ai/models?fmt=cards&max_price=0&output_modalities=text&input_modalities=text",
+                        UseShellExecute = true
+                    };
+                    Process.Start(psi);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Baslatma sirasinda hata olustu:\n" + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             };
 
             btnSave = new Button
@@ -64,13 +90,13 @@ namespace CopyPolish
                 {
                     Properties.Settings.Default.CopyPolishApiKey = txtApiKey.Text ?? string.Empty;
                     Properties.Settings.Default.Save();
-                    MessageBox.Show("API anahtarı kaydedildi.", "Bilgi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("API anahtari kaydedildi.", "Bilgi", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     this.DialogResult = DialogResult.OK;
                     this.Close();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Kaydetme sırasında hata oluştu:\n" + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Kaydetme sirasinda hata olustu:\n" + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             };
 
@@ -89,6 +115,7 @@ namespace CopyPolish
             this.Controls.Add(lblApiKey);
             this.Controls.Add(txtApiKey);
             this.Controls.Add(btnToggle);
+            this.Controls.Add(linkOpenRouter);
             this.Controls.Add(btnSave);
             this.Controls.Add(btnClose);
 
