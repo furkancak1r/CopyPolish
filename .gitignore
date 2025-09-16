@@ -8,11 +8,13 @@
 # Build outputs
 bin/
 obj/
+dist/
 *.dll
 *.exe
 *.pdb
 *.vsto
 *.manifest
+*.rar
 
 # User settings and config files
 *.config
