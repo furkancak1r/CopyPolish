@@ -24,6 +24,11 @@ namespace CopyPolish
         private Label lblIncludeContext;
         private RadioButton rdoIncludeYes;
         private RadioButton rdoIncludeNo;
+        private Label lblPromptImprove;
+        private TextBox txtPromptImprove;
+        private Label lblPromptTranslate;
+        private TextBox txtPromptTranslate;
+
 
         public SettingsForm()
         {
@@ -37,7 +42,7 @@ namespace CopyPolish
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.StartPosition = FormStartPosition.CenterParent;
-            this.ClientSize = new Size(560, 360);
+            this.ClientSize = new Size(560, 680);
 
             lblApiKey = new Label
             {
@@ -75,7 +80,7 @@ namespace CopyPolish
             txtPrimaryModel = new TextBox
             {
                 Location = new Point(160, 66),
-                Width = 360
+                Width = 380
             };
 
             lblFallback1 = new Label
@@ -88,7 +93,7 @@ namespace CopyPolish
             txtFallback1 = new TextBox
             {
                 Location = new Point(160, 100),
-                Width = 360
+                Width = 380
             };
 
             lblFallback2 = new Label
@@ -101,7 +106,7 @@ namespace CopyPolish
             txtFallback2 = new TextBox
             {
                 Location = new Point(160, 134),
-                Width = 360
+                Width = 380
             };
 
             lblFallback3 = new Label
@@ -114,7 +119,7 @@ namespace CopyPolish
             txtFallback3 = new TextBox
             {
                 Location = new Point(160, 168),
-                Width = 360
+                Width = 380
             };
 
             lblIncludeContext = new Label
@@ -128,7 +133,7 @@ namespace CopyPolish
             {
                 AutoSize = true,
                 Text = "Evet",
-                Location = new Point(40, 238),
+                Location = new Point(200, 210),
                 Checked = true
             };
 
@@ -136,14 +141,46 @@ namespace CopyPolish
             {
                 AutoSize = true,
                 Text = "Hayır",
-                Location = new Point(120, 238)
+                Location = new Point(280, 210)
+            };
+            
+            lblPromptImprove = new Label
+            {
+                AutoSize = true,
+                Text = "İyileştirme Promptu:",
+                Location = new Point(16, 250)
+            };
+
+            txtPromptImprove = new TextBox
+            {
+                Location = new Point(16, 270),
+                Width = 528,
+                Height = 150,
+                Multiline = true,
+                ScrollBars = ScrollBars.Vertical
+            };
+
+            lblPromptTranslate = new Label
+            {
+                AutoSize = true,
+                Text = "Çeviri Promptu:",
+                Location = new Point(16, 430)
+            };
+
+            txtPromptTranslate = new TextBox
+            {
+                Location = new Point(16, 450),
+                Width = 528,
+                Height = 150,
+                Multiline = true,
+                ScrollBars = ScrollBars.Vertical
             };
 
             linkOpenRouter = new LinkLabel
             {
                 AutoSize = true,
                 Text = "OpenRouter ücretsiz modeller listesi",
-                Location = new Point(16, 274),
+                Location = new Point(16, 615),
                 TabStop = true
             };
             linkOpenRouter.LinkClicked += (s, e) =>
@@ -166,7 +203,7 @@ namespace CopyPolish
             btnSave = new Button
             {
                 Text = "Kaydet",
-                Location = new Point(360, 310),
+                Location = new Point(360, 640),
                 Width = 90
             };
             btnSave.Click += (s, e) =>
@@ -187,6 +224,9 @@ namespace CopyPolish
                     Properties.Settings.Default.FallbackModelName3 = string.IsNullOrWhiteSpace(fallback3) ? ModelConfiguration.DefaultFallbackModel3 : fallback3;
                     Properties.Settings.Default.IncludeEmailContext = includeContext;
 
+                    Properties.Settings.Default.SystemPromptImprove = txtPromptImprove.Text;
+                    Properties.Settings.Default.SystemPromptTranslate = txtPromptTranslate.Text;
+
                     Properties.Settings.Default.Save();
                     MessageBox.Show("Ayarlar kaydedildi.", "Bilgi", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     this.DialogResult = DialogResult.OK;
@@ -201,7 +241,7 @@ namespace CopyPolish
             btnClose = new Button
             {
                 Text = "Kapat",
-                Location = new Point(460, 310),
+                Location = new Point(460, 640),
                 Width = 90
             };
             btnClose.Click += (s, e) =>
@@ -224,6 +264,10 @@ namespace CopyPolish
             this.Controls.Add(lblIncludeContext);
             this.Controls.Add(rdoIncludeYes);
             this.Controls.Add(rdoIncludeNo);
+            this.Controls.Add(lblPromptImprove);
+            this.Controls.Add(txtPromptImprove);
+            this.Controls.Add(lblPromptTranslate);
+            this.Controls.Add(txtPromptTranslate);
             this.Controls.Add(linkOpenRouter);
             this.Controls.Add(btnSave);
             this.Controls.Add(btnClose);
@@ -247,6 +291,9 @@ namespace CopyPolish
                 var includeContext = Properties.Settings.Default.IncludeEmailContext;
                 rdoIncludeYes.Checked = includeContext;
                 rdoIncludeNo.Checked = !includeContext;
+
+                txtPromptImprove.Text = Properties.Settings.Default.SystemPromptImprove;
+                txtPromptTranslate.Text = Properties.Settings.Default.SystemPromptTranslate;
             };
         }
     }
