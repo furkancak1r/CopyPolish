@@ -5,10 +5,10 @@ namespace CopyPolish
 {
     internal static class ModelConfiguration
     {
-        public const string DefaultPrimaryModel = "mistralai/mistral-7b-instruct:free";
-        public const string DefaultFallbackModel1 = "nousresearch/nous-hermes-2-mixtral-8x7b-dpo";
-        public const string DefaultFallbackModel2 = "google/gemma-7b-it:free";
-        public const string DefaultFallbackModel3 = "gryphe/gryphe-mistral-7b-v2";
+        public const string DefaultPrimaryModel = "qwen/qwen3-coder:free";
+        public const string DefaultFallbackModel1 = "deepseek/deepseek-chat-v3.1:free";
+        public const string DefaultFallbackModel2 = "openai/gpt-oss-120b:free";
+        public const string DefaultFallbackModel3 = "nvidia/nemotron-nano-9b-v2:free";
 
         public const string DefaultSystemPromptImprove = @"Sen, bir e-postanın ana mesajını ve samimiyet tonunu koruyarak onu daha akıcı ve etkili hale getiren bir iletişim asistanısın. Aşağıdaki kurallara harfiyen uymalısın:
 
