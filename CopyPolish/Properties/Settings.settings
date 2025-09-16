@@ -1,4 +1,4 @@
-﻿<?xml version='1.0' encoding='utf-8'?>
+<?xml version='1.0' encoding='utf-8'?>
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)">
   <Profiles>
     <Profile Name="(Default)" />
@@ -6,6 +6,18 @@
   <Settings>
     <Setting Name="CopyPolishApiKey" Type="System.String" Scope="User">
       <Value Profile="(Default)"></Value>
+    </Setting>
+    <Setting Name="PrimaryModelName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">qwen/qwen3-coder:free</Value>
+    </Setting>
+    <Setting Name="FallbackModelName1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">deepseek/deepseek-chat-v3.1:free</Value>
+    </Setting>
+    <Setting Name="FallbackModelName2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">openai/gpt-oss-120b:free</Value>
+    </Setting>
+    <Setting Name="FallbackModelName3" Type="System.String" Scope="User">
+      <Value Profile="(Default)">nvidia/nemotron-nano-9b-v2:free</Value>
     </Setting>
   </Settings>
 </SettingsFile>

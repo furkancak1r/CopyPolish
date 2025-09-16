@@ -13,7 +13,6 @@ namespace CopyPolish
 {
     public partial class ThisAddIn
     {
-        private const string ModelName = "qwen/qwen3-coder:free";
         private const string SystemPromptImprove = @"Sen, bir e-postanın ana mesajını ve samimiyet tonunu koruyarak onu daha akıcı ve etkili hale getiren bir iletişim asistanısın. Aşağıdaki kurallara harfiyen uymalısın:
 
 1.  TONU KORU (En Önemli Kural): Orijinal metin ne kadar samimi veya resmi ise, senin metnin de o seviyede olmalıdır. Samimi bir dili (""Selam abi"") asla aşırı resmi bir dile (""Sayın Yetkili"") çevirme.
@@ -79,9 +78,9 @@ namespace CopyPolish
 
                 Task.Run(() =>
                 {
-                    return OpenRouterClient.Complete(
+                    return OpenRouterClient.CompleteWithFallback(
                         apiKey,
-                        ModelName,
+                        ModelConfiguration.GetModelChain(),
                         SystemPromptImprove,
                         userContent,
                         referer: "https://local.copy-polish",
@@ -163,9 +162,9 @@ namespace CopyPolish
 
                 Task.Run(() =>
                 {
-                    return OpenRouterClient.Complete(
+                    return OpenRouterClient.CompleteWithFallback(
                         apiKey,
-                        ModelName,
+                        ModelConfiguration.GetModelChain(),
                         SystemPromptTranslate,
                         userContent,
                         referer: "https://local.copy-polish",
@@ -331,4 +330,7 @@ namespace CopyPolish
         #endregion
     }
 }
-  
+
+
+
+

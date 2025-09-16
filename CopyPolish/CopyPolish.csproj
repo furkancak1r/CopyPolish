@@ -246,6 +246,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="OpenRouterClient.cs" />
+    <Compile Include="ModelConfiguration.cs" />
     <None Include="CopyPolish_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

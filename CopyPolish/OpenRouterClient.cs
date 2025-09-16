@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -59,6 +60,38 @@ namespace CopyPolish
                     return (result.choices[0].message.content ?? string.Empty).Trim();
                 }
             }
+        }
+
+        public static string CompleteWithFallback(string apiKey, IEnumerable<string> models, string systemPrompt, string userContent, string referer = null, string title = null)
+        {
+            if (models == null)
+                throw new ArgumentNullException(nameof(models));
+
+            var errors = new List<string>();
+            foreach (var modelName in models)
+            {
+                var trimmed = modelName?.Trim();
+                if (string.IsNullOrWhiteSpace(trimmed))
+                {
+                    continue;
+                }
+
+                try
+                {
+                    return Complete(apiKey, trimmed, systemPrompt, userContent, referer, title);
+                }
+                catch (Exception ex)
+                {
+                    errors.Add($"{trimmed}: {ex.Message}");
+                }
+            }
+
+            if (errors.Count == 0)
+            {
+                throw new Exception("Denenecek model bulunamadi.");
+            }
+
+            throw new Exception("Tum modeller basarisiz oldu:\n" + string.Join("\n", errors));
         }
 
         private static string Serialize<T>(T obj)
@@ -125,3 +158,7 @@ namespace CopyPolish
         }
     }
 }
+
+
+
+
