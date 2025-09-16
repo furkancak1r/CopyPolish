@@ -1,8 +1,0 @@
-
-## Ribbon Hata Ayıklama Notu
-
-Gelecekteki VSTO Ribbon "sessiz hata" (silent failure) problemlerini hızlıca teşhis etmek için, geliştirme sırasında Outlook'un hata gösterme özelliğini aktif et.
-
-**Yapılacaklar:**
-Outlook'ta `Dosya > Seçenekler > Gelişmiş` yolunu izle. `Geliştiriciler` bölümü altında bulunan **"Eklenti kullanıcı arayüzü hatalarını göster"** seçeneğini
-  
