@@ -128,8 +128,7 @@ namespace CopyPolish
             {
                 AutoSize = true,
                 Text = "Evet",
-                Location = new Point(40, 238),
-                Checked = true
+                Location = new Point(40, 238)
             };
 
             rdoIncludeNo = new RadioButton
@@ -251,4 +250,3 @@ namespace CopyPolish
         }
     }
 }
-  

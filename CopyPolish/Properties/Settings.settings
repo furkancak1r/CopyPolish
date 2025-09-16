@@ -1,23 +1,23 @@
-<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CopyPolish.Properties" GeneratedClassName="Settings">
+  <Profiles />
   <Settings>
     <Setting Name="CopyPolishApiKey" Type="System.String" Scope="User">
-      <Value Profile="(Default)"></Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="PrimaryModelName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">qwen/qwen3-coder:free</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="FallbackModelName1" Type="System.String" Scope="User">
-      <Value Profile="(Default)">deepseek/deepseek-chat-v3.1:free</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="FallbackModelName2" Type="System.String" Scope="User">
-      <Value Profile="(Default)">openai/gpt-oss-120b:free</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="FallbackModelName3" Type="System.String" Scope="User">
-      <Value Profile="(Default)">nvidia/nemotron-nano-9b-v2:free</Value>
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="IncludeEmailContext" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

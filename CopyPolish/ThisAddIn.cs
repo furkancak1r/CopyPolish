@@ -55,8 +55,6 @@ namespace CopyPolish
                     return;
                 }
 
-                var fullText = GetFullBodyText(doc) ?? string.Empty;
-
                 var apiKey = Properties.Settings.Default.CopyPolishApiKey;
                 if (string.IsNullOrWhiteSpace(apiKey))
                 {
@@ -66,11 +64,25 @@ namespace CopyPolish
                     if (string.IsNullOrWhiteSpace(apiKey)) return;
                 }
 
-                string userContent =
-                    "Tüm e-posta içeriği (konuşma geçmişi ve önceki mesajlar dahil) aşağıdadır. Tüm bağlamı dikkatlice analiz et fakat sadece seçili metni düzelt.\n" +
-                    "<EMAIL>\n" + fullText + "\n</EMAIL>\n" +
-                    "Seçili bölüm aşağıdadır. Sadece bunun düzeltilmiş halini, başka bir şey olmadan döndür.\n" +
-                    "<SELECTION>\n" + selectedText + "\n</SELECTION>";
+                string userContent;
+                bool includeContext = Properties.Settings.Default.IncludeEmailContext;
+
+                if (includeContext)
+                {
+                    var fullText = GetFullBodyText(doc) ?? string.Empty;
+                    userContent =
+                        "Tüm e-posta içeriği (konuşma geçmişi ve önceki mesajlar dahil) aşağıdadır. Tüm bağlamı dikkatlice analiz et fakat sadece seçili metni düzelt.\n" +
+                        "<EMAIL>\n" + fullText + "\n</EMAIL>\n" +
+                        "Seçili bölüm aşağıdadır. Sadece bunun düzeltilmiş halini, başka bir şey olmadan döndür.\n" +
+                        "<SELECTION>\n" + selectedText + "\n</SELECTION>";
+                }
+                else
+                {
+                    userContent =
+                        "Aşağıdaki seçili bölümü düzelt. Sadece bunun düzeltilmiş halini, başka bir şey olmadan döndür.\n" +
+                        "<SELECTION>\n" + selectedText + "\n</SELECTION>";
+                }
+
 
                 var loading = new LoadingForm("Yapay zekadan yanıt bekleniyor...");
                 loading.Show();
@@ -139,8 +151,6 @@ namespace CopyPolish
                     return;
                 }
 
-                var fullText = GetFullBodyText(doc) ?? string.Empty;
-
                 var apiKey = Properties.Settings.Default.CopyPolishApiKey;
                 if (string.IsNullOrWhiteSpace(apiKey))
                 {
@@ -150,11 +160,26 @@ namespace CopyPolish
                     if (string.IsNullOrWhiteSpace(apiKey)) return;
                 }
 
-                string userContent =
-                    "Use the full email content below (including conversation history and previous messages) only as context. Analyze the entire context carefully but translate ONLY the selected part from Turkish to English. Output only the translation.\n" +
-                    "<EMAIL>\n" + fullText + "\n</EMAIL>\n" +
-                    "Selected segment to translate:\n" +
-                    "<SELECTION>\n" + selectedText + "\n</SELECTION>";
+                string userContent;
+                bool includeContext = Properties.Settings.Default.IncludeEmailContext;
+
+                if (includeContext)
+                {
+                    var fullText = GetFullBodyText(doc) ?? string.Empty;
+                    userContent =
+                        "Use the full email content below (including conversation history and previous messages) only as context. Analyze the entire context carefully but translate ONLY the selected part from Turkish to English. Output only the translation.\n" +
+                        "<EMAIL>\n" + fullText + "\n</EMAIL>\n" +
+                        "Selected segment to translate:\n" +
+                        "<SELECTION>\n" + selectedText + "\n</SELECTION>";
+                }
+                else
+                {
+                    userContent =
+                        "Translate ONLY the selected part from Turkish to English. Output only the translation.\n" +
+                        "Selected segment to translate:\n" +
+                        "<SELECTION>\n" + selectedText + "\n</SELECTION>";
+                }
+
 
                 var loading = new LoadingForm("Çeviri yapılıyor, lütfen bekleyin...");
                 loading.Show();
@@ -330,7 +355,4 @@ namespace CopyPolish
         #endregion
     }
 }
-
-
-
-
+  
