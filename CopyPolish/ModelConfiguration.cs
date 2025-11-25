@@ -5,7 +5,7 @@ namespace CopyPolish
 {
     internal static class ModelConfiguration
     {
-        public const string DefaultPrimaryModel = "qwen/qwen3-coder:free";
+        public const string DefaultPrimaryModel = "z-ai/glm-4.5-air:free";
         public const string DefaultFallbackModel1 = "deepseek/deepseek-chat-v3.1:free";
         public const string DefaultFallbackModel2 = "openai/gpt-oss-120b:free";
         public const string DefaultFallbackModel3 = "nvidia/nemotron-nano-9b-v2:free";

@@ -35,7 +35,7 @@
     <PublishUrl>C:\Users\furkan.cakir\Desktop\FurkanPRS\Kodlar\Projeler\test\CopyPolish\dist\</PublishUrl>
     <InstallUrl />
     <TargetCulture>tr</TargetCulture>
-    <ApplicationVersion>1.0.0.3</ApplicationVersion>
+    <ApplicationVersion>1.0.0.4</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
