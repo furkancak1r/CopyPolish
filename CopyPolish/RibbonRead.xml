@@ -16,6 +16,11 @@
                   imageMso="Translate"
                   onAction="OnTranslateTrEnClick"
                   getEnabled="GetSelectionDependentEnabled"/>
+          <button id="btnSearchRead"
+                  label="Ara"
+                  size="large"
+                  imageMso="SearchToolsSearch"
+                  onAction="OnSearchClick"/>
           <button id="btnSettingsRead"
                   label="Ayarlar"
                   size="large"

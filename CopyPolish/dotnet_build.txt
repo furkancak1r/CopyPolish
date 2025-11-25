@@ -1,0 +1,11 @@
+  Geri yüklenecek projeler belirleniyor...
+  Yapılacak işlem yok. Belirtilen projelerden hiçbiri geri yüklenecek paketleri içermiyor.
+C:\Users\furkan.cakir\Desktop\FurkanPRS\Kodlar\Projeler\test\CopyPolish\CopyPolish\CopyPolish.csproj(293,3): error MSB4019: İçe aktarılan "C:\Program Files\dotnet\sdk\9.0.200\Microsoft\VisualStudio\v17.0\OfficeTools\Microsoft.VisualStudio.Tools.Office.targets" projesi bulunamadı. "C:\Program Files\dotnet\sdk\9.0.200\Microsoft\VisualStudio\v17.0\OfficeTools\Microsoft.VisualStudio.Tools.Office.targets" olarak değerlendirilen "$(VSToolsPath)\OfficeTools\Microsoft.VisualStudio.Tools.Office.targets" İçe Aktarma bildirimindeki ifadenin doğru olduğunu ve dosyanın diskte mevcut olduğunu onaylayın.
+
+Oluşturma BAŞARISIZ OLDU.
+
+C:\Users\furkan.cakir\Desktop\FurkanPRS\Kodlar\Projeler\test\CopyPolish\CopyPolish\CopyPolish.csproj(293,3): error MSB4019: İçe aktarılan "C:\Program Files\dotnet\sdk\9.0.200\Microsoft\VisualStudio\v17.0\OfficeTools\Microsoft.VisualStudio.Tools.Office.targets" projesi bulunamadı. "C:\Program Files\dotnet\sdk\9.0.200\Microsoft\VisualStudio\v17.0\OfficeTools\Microsoft.VisualStudio.Tools.Office.targets" olarak değerlendirilen "$(VSToolsPath)\OfficeTools\Microsoft.VisualStudio.Tools.Office.targets" İçe Aktarma bildirimindeki ifadenin doğru olduğunu ve dosyanın diskte mevcut olduğunu onaylayın.
+    0 Uyarı
+    1 Hata
+
+Geçen Süre 00:00:01.32

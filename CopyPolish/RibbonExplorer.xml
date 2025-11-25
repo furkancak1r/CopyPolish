@@ -16,6 +16,11 @@
                   imageMso="Translate"
                   onAction="OnTranslateTrEnClick"
                   getEnabled="IsExplorerSelectionEnabled_Final"/>
+          <button id="btnSearchExplorer"
+                  label="Ara"
+                  size="large"
+                  imageMso="SearchToolsSearch"
+                  onAction="OnSearchClick"/>
           <button id="btnSettingsExplorer"
                   label="Ayarlar"
                   size="large"

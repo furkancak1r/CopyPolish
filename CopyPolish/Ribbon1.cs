@@ -121,6 +121,21 @@ namespace CopyPolish
             }
         }
 
+        public void OnSearchClick(Office.IRibbonControl control)
+        {
+            try
+            {
+                Log($"OnSearchClick triggered by control: {control?.Id}");
+                var form = new SearchForm();
+                form.Show(); // Non-modal to allow interacting with Outlook while searching
+            }
+            catch (Exception ex)
+            {
+                Log("ERROR in OnSearchClick", ex);
+                MessageBox.Show("Arama penceresi açılırken hata oluştu:\n" + ex.Message, "Hata");
+            }
+        }
+
         public bool GetSelectionDependentEnabled(Office.IRibbonControl control)
         {
             try

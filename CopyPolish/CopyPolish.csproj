@@ -33,9 +33,9 @@
     <IsWebBootstrapper>False</IsWebBootstrapper>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <PublishUrl>C:\Users\furkan.cakir\Desktop\FurkanPRS\Kodlar\Projeler\test\CopyPolish\dist\</PublishUrl>
-    <InstallUrl />
+    <InstallUrl>file:///C:/Users/furkan.cakir/Desktop/FurkanPRS/Kodlar/Projeler/test/CopyPolish/CopyPolish/dist/</InstallUrl>
     <TargetCulture>tr</TargetCulture>
-    <ApplicationVersion>1.0.0.4</ApplicationVersion>
+    <ApplicationVersion>1.0.0.5</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -234,6 +234,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="LoadingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SearchForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">

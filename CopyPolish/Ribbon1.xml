@@ -25,6 +25,13 @@
                   showLabel="true"
                   imageMso="ApplicationOptionsDialog"
                   onAction="OnCopyPolishSettingsClick"/>
+          <button id="btnSearch1"
+                  label="Ara"
+                  size="large"
+                  showImage="true"
+                  showLabel="true"
+                  imageMso="SearchToolsSearch"
+                  onAction="OnSearchClick"/>
         </group>
       </tab>
       <tab idMso="TabMailMessage">
@@ -50,6 +57,13 @@
                   showLabel="true"
                   imageMso="ApplicationOptionsDialog"
                   onAction="OnCopyPolishSettingsClick"/>
+          <button id="btnSearch2"
+                  label="Ara"
+                  size="large"
+                  showImage="true"
+                  showLabel="true"
+                  imageMso="SearchToolsSearch"
+                  onAction="OnSearchClick"/>
         </group>
       </tab>
       <tab idMso="TabReadMessage">
@@ -75,6 +89,13 @@
                   showLabel="true"
                   imageMso="ApplicationOptionsDialog"
                   onAction="OnCopyPolishSettingsClick"/>
+          <button id="btnSearch4"
+                  label="Ara"
+                  size="large"
+                  showImage="true"
+                  showLabel="true"
+                  imageMso="SearchToolsSearch"
+                  onAction="OnSearchClick"/>
         </group>
       </tab>
     </tabs>
