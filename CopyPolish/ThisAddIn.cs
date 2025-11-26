@@ -269,10 +269,6 @@ namespace CopyPolish
             }
             catch { }
         }
-        protected override Microsoft.Office.Core.IRibbonExtensibility CreateRibbonExtensibilityObject()
-        {
-            return new Ribbon1();
-        }
 
         private static string SafeGetSelectionText(Word.Document doc)
         {
@@ -290,6 +286,15 @@ namespace CopyPolish
             {
                 return null;
             }
+        }
+
+        protected override object RequestService(Guid serviceGuid)
+        {
+            if (serviceGuid == typeof(Office.IRibbonExtensibility).GUID)
+            {
+                return new Ribbon1();
+            }
+            return base.RequestService(serviceGuid);
         }
 
         void Inspectors_NewInspector(Outlook.Inspector Inspector)

@@ -19,7 +19,8 @@
           <button id="btnSearchRead"
                   label="Ara"
                   size="large"
-                  imageMso="SearchToolsSearch"
+                  showImage="true"
+                  imageMso="Search"
                   onAction="OnSearchClick"/>
           <button id="btnSettingsRead"
                   label="Ayarlar"

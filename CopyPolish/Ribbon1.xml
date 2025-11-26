@@ -30,7 +30,7 @@
                   size="large"
                   showImage="true"
                   showLabel="true"
-                  imageMso="SearchToolsSearch"
+                  imageMso="Search"
                   onAction="OnSearchClick"/>
         </group>
       </tab>
