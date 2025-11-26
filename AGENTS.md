@@ -80,6 +80,13 @@ echo -e "Path=.\nSetup=setup.exe\nTempMode\nSilent=2\nOverwrite=1\nTitle=CopyPol
 - **Hedef PC gereksinimleri**: .NET Framework 4.7.2, VSTO Runtime, Microsoft Outlook.
 - **Son EXE boyutu**: ~789 KB (tüm dosyalar dahil).
 
+### 26.11.2025 dist Güncelleme Özeti
+
+- Temizlik: `dist/`, `CopyPolish/bin/Release/app.publish` ve `C:/temp/CopyPolish_Build/` silindi.
+- Build/Publish: `"%ProgramFiles%/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/MSBuild.exe" CopyPolish/CopyPolish.csproj -t:Publish -p:Configuration=Release -p:PublishDir="C:/temp/CopyPolish_Build/" -p:BootstrapperEnabled=true`
+- Çıktı taşıma: `C:/temp/CopyPolish_Build/{Application Files, CopyPolish.vsto, setup.exe}` -> kök `dist/`.
+- SFX: `dist/sfx_config.txt` güncellendi; `"%ProgramFiles%/WinRAR/WinRAR.exe" a -sfx -z"sfx_config.txt" -ep1 dist/CopyPolish.exe setup.exe CopyPolish.vsto "Application Files"` ile yeni tek EXE üretildi.
+
 ## Kodlama Stili ve İsimlendirme
 
 - Dil: C# 4.7.2, 4 boşluklu girinti, `var` sadece açık tür bağlamı varken.

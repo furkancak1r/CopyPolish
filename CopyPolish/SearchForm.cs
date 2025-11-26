@@ -64,6 +64,7 @@ namespace CopyPolish
         private Panel topPanel;
         private BackgroundWorker searchWorker;
         private bool isSearching = false;
+        private bool suppressSelectionChanged = false; // Grid seçim olayını programatik değişikliklerde bastır
         private string currentSearchQuery = "";
         private HashSet<string> addedEntryIds = new HashSet<string>(); // Mükerrer sonuçları önle
         private int lastAddedCount = 0; // Son eklenen sonuç sayısı
@@ -907,6 +908,8 @@ namespace CopyPolish
 
         private void GridResults_SelectionChanged(object sender, EventArgs e)
         {
+            if (suppressSelectionChanged) return;
+            
             if (gridResults.SelectedRows.Count > 0)
             {
                 var tag = gridResults.SelectedRows[0].Tag as ItemLocation;
@@ -1982,7 +1985,19 @@ namespace CopyPolish
                 }
                 else
                 {
-                    ShowPreviewPlaceholder("Önizlemek için bir sonuç seçin");
+                    // Seçim varsa önizlemeyi güncelle, yoksa placeholder'ı koru
+                    if (gridResults.SelectedRows.Count > 0)
+                    {
+                        var selectedTag = gridResults.SelectedRows[0].Tag as ItemLocation;
+                        if (selectedTag != null)
+                        {
+                            ShowPreview(selectedTag.EntryID, selectedTag.StoreID);
+                        }
+                    }
+                    else
+                    {
+                        ShowPreviewPlaceholder("Önizlemek için bir sonuç seçin");
+                    }
                 }
             };
 
@@ -1999,45 +2014,53 @@ namespace CopyPolish
         private void UpdateGridWithResults(List<SearchResult> results)
         {
             // Sadece yeni sonuçları ekle, grid'i temizleme (seçim korunsun)
-            foreach (var result in results)
+            bool hadSelection = gridResults.SelectedRows.Count > 0;
+            
+            suppressSelectionChanged = true;
+            try
             {
-                // Mükerrer kontrolü
-                if (addedEntryIds.Contains(result.EntryID))
+                foreach (var result in results)
                 {
-                    continue;
+                    // Mükerrer kontrolü
+                    if (addedEntryIds.Contains(result.EntryID))
+                    {
+                        continue;
+                    }
+                    
+                    addedEntryIds.Add(result.EntryID);
+                    
+                    // Tarihe göre doğru konumu bul (en yeni en üstte)
+                    int insertIndex = FindInsertPosition(result.Time);
+                    
+                    // Konu başlığına ek ikonu ekle
+                    string subjectDisplay = result.Subject;
+                    if (result.HasAttachments)
+                    {
+                        subjectDisplay = "[+] " + subjectDisplay;
+                    }
+                    
+                    gridResults.Rows.Insert(insertIndex, subjectDisplay, result.MatchText, result.Sender, result.Time, result.FolderName);
+                    gridResults.Rows[insertIndex].Tag = new ItemLocation { EntryID = result.EntryID, StoreID = result.StoreID };
+                    
+                    // Konu eşleşmelerini vurgula
+                    if (result.IsSubjectMatch)
+                    {
+                        gridResults.Rows[insertIndex].DefaultCellStyle.BackColor = HighlightColor;
+                    }
                 }
-                
-                addedEntryIds.Add(result.EntryID);
-                
-                // Tarihe göre doğru konumu bul (en yeni en üstte)
-                int insertIndex = FindInsertPosition(result.Time);
-                
-                // Konu başlığına ek ikonu ekle
-                string subjectDisplay = result.Subject;
-                if (result.HasAttachments)
+
+                // Kullanıcı henüz seçim yapmadıysa otomatik seçim bırakma
+                if (!hadSelection)
                 {
-                    subjectDisplay = "[+] " + subjectDisplay;
+                    gridResults.ClearSelection();
                 }
-                
-                gridResults.Rows.Insert(insertIndex, subjectDisplay, result.MatchText, result.Sender, result.Time, result.FolderName);
-                gridResults.Rows[insertIndex].Tag = new ItemLocation { EntryID = result.EntryID, StoreID = result.StoreID };
-                
-                // Konu eşleşmelerini vurgula
-                if (result.IsSubjectMatch)
-                {
-                    gridResults.Rows[insertIndex].DefaultCellStyle.BackColor = HighlightColor;
-                }
+            }
+            finally
+            {
+                suppressSelectionChanged = false;
             }
             
             lastAddedCount = results.Count;
-
-            // Eğer henüz seçim yoksa ilk satırı seç ve önizlemeyi güncelle
-            if (gridResults.Rows.Count > 0 && gridResults.SelectedRows.Count == 0)
-            {
-                gridResults.ClearSelection();
-                gridResults.Rows[0].Selected = true;
-                GridResults_SelectionChanged(this, EventArgs.Empty);
-            }
         }
 
         private int FindInsertPosition(string timeString)
